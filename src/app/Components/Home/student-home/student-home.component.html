@@ -1,18 +1,7 @@
 <div class="container">
-  <nav class="navbar navbar-light tick-bg">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="https://unicomtic.org/wp-content/uploads/2023/08/UNICOM-TIC_LOGO-1536x580.png" alt="" width="100px">
-      </a>
-      <div class="d-flex justify-content-end">
-        <div class="text-white fw-bold">Abiram(ut56854)</div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="row mt-5 m-1" *ngIf="!isStartExam">
-    <div class="col-4">
-      <div class="tick-shadow p-3" *ngFor="let exam of activeDetails ">
+  <div class="row mt-5 m-1">
+    <div class="col-4" *ngFor="let exam of activeDetails ">
+      <div class="tick-shadow p-3 mt-3" >
         <div class="image text-center">
           <img src="https://static.vecteezy.com/system/resources/previews/012/658/235/non_2x/concept-online-testing-e-learning-examination-on-computer-png.png" alt="" width="60%">
         </div>
@@ -24,10 +13,10 @@
            Duration: {{exam.duration}}
           </div>
           <div>
-            Date : {{exam.date | date:'dd/mm/yy'}}
+            Date : {{exam.date | date:'dd/MM/yyyy'}}
           </div>
           <div class="text-center mt-3">
-            <button class="btn btn-block tick-button" [disabled]="!exam.isActive" (click)="startExam(exam.id)">Click to Start</button>
+            <button class="btn btn-block tick-button" [disabled]="!exam.isActive" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="examId = exam.id">Click to Start</button>
           </div>
         </div>
       </div>
@@ -35,22 +24,29 @@
   </div>
 </div>
 
-<div class="container mt-5" *ngIf="isStartExam">
-  <div class="tick-shadow p-3 rounded mt-3" *ngFor="let questions of examQuestions | paginate: { itemsPerPage: 2, currentPage: currentPage }; let i = index">
-    <div class="fs-6 fw-bold">{{questions.question}}</div>
-    <div class="ms-2 mt-2">
-      <div class="form-check" *ngFor="let answer of questions.answerOptions ">
-        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-        <label class="form-check-label" for="flexRadioDefault1">
-         {{answer.answer}}
-        </label>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="text-center">
+          <img src="https://png.pngtree.com/png-vector/20221001/ourmid/pngtree-wedding-organizer-providing-decoration-service-or-making-plans-before-married-ceremony-png-image_6240007.png" alt="" width="300px">
+          <div class="text-center fw-bold fs-5 mt-3">
+            Are you sure you want to enroll in the exam?
+          </div>
+          <div class="text-center mt-2">
+            Once you confirm, you will not be able to go back or make changes until you complete the exam. Please make sure you're ready to proceed.
+          </div>
+        </div>
+        <div class="d-flex text-center mt-3">
+          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn tick-button w-50" data-bs-dismiss="modal" [routerLink]="['/exam',examId]">confirm</button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="col-12 float-right d-flex justify-content-end">
-      <pagination-controls [maxSize]="5"  (pageChange)="currentPage = $event" [previousLabel]="'Prev'" ></pagination-controls>
-    </div>
-  </div>
-
 </div>
+<button class="d-none" id="c-model" data-bs-dismiss="modal">confirm</button>

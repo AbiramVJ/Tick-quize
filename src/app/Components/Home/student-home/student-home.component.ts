@@ -1,29 +1,35 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import {NgxPaginationModule} from 'ngx-pagination';
+import { CommonModule, LocationStrategy, PlatformLocation } from '@angular/common';
+import { Component, HostListener, OnInit } from '@angular/core';
+
 import { ExamService } from '../../../Services/exam.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router, RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-student-home',
   standalone: true,
-  imports: [CommonModule,NgxPaginationModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './student-home.component.html',
   styleUrl: './student-home.component.scss'
 })
 export class StudentHomeComponent implements OnInit {
-  public currentPage:number = 1;
-  public examQuestions:any = [];
   public activeDetails:any = [];
   public examId:string = '';
-
-  public isStartExam:boolean = false;
-  constructor(private examService:ExamService,private toastr: ToastrService){
+  constructor(private examService:ExamService,
+    private toastr: ToastrService,
+    private location: LocationStrategy,){
 
   }
+
+  // @HostListener('window:beforeunload', ['$event'])
+  // unloadNotification($event: any): void {
+  //   $event.returnValue = 'Are you sure you want to leave the exam?';
+  // }
+
   ngOnInit() {
     this._getExamDetails();
+   // this.preventBackButton();
   }
 
   public _getExamDetails(){
@@ -41,35 +47,15 @@ export class StudentHomeComponent implements OnInit {
     })
   }
 
-  public startExam(id:string){
-    this.examService.startExam(id).subscribe({
-      next:()=>{
 
-      },
-      complete:()=>{
-        this._getExamQuestions(id);
-      },
-      error:(error:any)=>{
-        console.log(error)
-        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
 
-      }
-    })
 
-  }
+  // private preventBackButton() {
+  //   history.pushState(null, '', window.location.href);
+  //   this.location.onPopState(() => {
+  //     history.pushState(null, '', window.location.href);
+  //   })
+  // }
 
-  public _getExamQuestions(id:string){
-    this.isStartExam = true;
-    this.examService.getQuestionsDetails(id).subscribe({
-      next:(res:any)=>{
-        this.examQuestions = res.Result;
-      },
-      complete:()=>{
-      },
-      error:(error:any)=>{
-
-      }
-    })
-  }
 
 }

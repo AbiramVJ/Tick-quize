@@ -1,15 +1,14 @@
 
 <div class="row m-0">
-  <div class="text-center fs-1">QuizWiz</div>
-  <div class="col-6 p-3">
-    <div class="text-center">
-      <img src="https://unicomtic.org/wp-content/uploads/2023/08/UNICOM-TIC_LOGO-1536x580.png" alt="" width="150px">
-      <div class="fs-5 mt-3 mb-3">Exam Notices</div>
-    </div>
-  </div>
   <div class="row">
-    <div class="col-6 border-end">
-      <div class="border shadow-lg rounded p-3">
+    <div class="col-6 d-flex align-items-center justify-content-center bg-image">
+      <div>
+        <div class="text-center fs-1 text-white fw-bold mt-5">QuizWiz</div>
+        <div class="col-12 p-3">
+
+        </div>
+      <div class="border tick-shadow p-3 bg-white">
+        <div class="fs-5 mt-3 mb-3 text-center">Exam Notices</div>
         <ul class="notice-list">
           <li>01. ID and Password Requirement: Ensure you have your ID and password ready before starting the exam.</li>
           <li>02. Session Timeout: If your session times out, the exam will be locked.</li>
@@ -18,33 +17,41 @@
           <li>05. Admin Verification: Only after entering the correct Admin ID can you continue your exam.</li>
       </ul>
       </div>
+      </div>
+
     </div>
-    <div class="col-6">
-      <div class="row">
-        <div class="col-10 mx-auto mb-3">
-          <label for="role" class="form-label">Login as</label>
-          <ng-select [items]="role" bindLabel="name" bindValue="id" (change)="changeRole($event)" [clearable]="false"> </ng-select>
+    <div class="col-6 d-flex align-items-center justify-content-center">
+      <div class="w-100">
+        <div class="text-center">
+          <img src="https://unicomtic.org/wp-content/uploads/2023/08/UNICOM-TIC_LOGO-1536x580.png" alt="" width="150px">
+        </div>
+        <div class="row">
+          <div class="col-10 mx-auto mb-3">
+            <label for="role" class="form-label">Login as</label>
+            <ng-select [items]="role" bindLabel="name" bindValue="id" [(ngModel)]="selectedRoleId" (ngModelChange)="changeRole($event)" [clearable]="false"> </ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <form [formGroup]="loginForm">
+          <div class="col-10 mx-auto">
+            <div class="">
+              <label for="student-id" class="form-label">Student Id</label>
+              <input type="text" class="form-control" id="email" formControlName="studentId" [ngClass]="{'errorBorder':isSubmitted && loginForm.get('studentId')?.errors}">
+            </div>
+            <div class="">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password" [ngClass]="{'errorBorder':isSubmitted && loginForm.get('password')?.errors}">
+            </div>
+          </div>
+          <div class="col-10 mx-auto mt-3">
+            <button class="btn btn-block tick-button w-100" (click)="login()" [disabled]="loadingIndicator">Login <span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span></button>
+          </div>
+
+        </form>
         </div>
       </div>
 
-      <div class="row">
-        <form [formGroup]="loginForm">
-        <div class="col-10 mx-auto">
-          <div class="">
-            <label for="student-id" class="form-label">Student Id</label>
-            <input type="text" class="form-control" id="email" formControlName="studentId">
-          </div>
-          <div class="">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password">
-          </div>
-        </div>
-        <div class="col-10 mx-auto mt-3">
-          <button class="btn btn-block tick-button w-100" (click)="login()">Login</button>
-        </div>
-
-      </form>
-      </div>
     </div>
   </div>
 </div>
