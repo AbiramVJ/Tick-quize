@@ -1,14 +1,11 @@
-<div class="container" *ngIf="isLogIn">
-  <nav class="navbar navbar-light tick-bg">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="https://unicomtic.org/wp-content/uploads/2023/08/UNICOM-TIC_LOGO-1536x580.png" alt="" width="100px">
-      </a>
-      <div class="d-flex justify-content-end">
-        <div class="text-white fw-bold">Abiram(ut56854)</div>
-      </div>
-    </div>
-  </nav>
-</div>
 
-<router-outlet></router-outlet>
+  <div class="row m-0">
+    <app-topbar *ngIf="isLogIn"></app-topbar>
+    <div class="col-2 p-0 rounded-0 side-bar border-end" *ngIf="isLogIn">
+      <app-sidebar ></app-sidebar>
+    </div>
+    <div [ngClass]="isLogIn ? 'col-10' : 'col-12'">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+

@@ -15,7 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit {
   public selectedRole:string = '';
   public selectedRoleId:number = 1;
-  public role:any = [{id:1, name:"Student"},{id:0, name:"Admin"}];
+  public role:any = [{id:1, name:"Student"},{id:2024, name:"QWAdmin"}];
   public loginForm!:FormGroup;
 
   public isSubmitted:boolean = false;
@@ -56,14 +56,15 @@ export class LoginComponent implements OnInit {
       this.authService.logIn(body).subscribe({
         next:(res:any)=>{
           localStorage.setItem('token', res.Result.token);
-          localStorage.setItem('login-type', this.selectedRole);
-          this.authService.setUserDetails(this.selectedRole);
-
         },
         complete:()=>{
           this.isSubmitted = false;
           this.loadingIndicator = false;
+          localStorage.setItem('login-type', this.selectedRole);
+          localStorage.setItem('index', this.loginForm.get('studentId')?.value);
+          this.authService.setUserDetails(this.selectedRole);
           this.route.navigate(['student-home']);
+
         },
         error:(error:any)=>{
           this.isSubmitted = false;
@@ -74,9 +75,44 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  public adminLogin(){
+    this.loadingIndicator = true;
+    this.isSubmitted = true;
+    const body = {
+        identifier: this.loginForm.get('studentId')?.value,
+        identifierType: this.selectedRoleId,
+        password: this.loginForm.get('password')?.value,
+        role: this.selectedRoleId !== 1 ? 'QWAdmin' : null,
+    }
+
+    console.log(body)
+
+    if(this.loginForm.valid){
+      this.authService.adminLogin(body).subscribe({
+        next:(res:any)=>{
+          localStorage.setItem('token', res.Result.token);
+        },
+        complete:()=>{
+          this.isSubmitted = false;
+          this.loadingIndicator = false;
+          const role:any = this.selectedRoleId !== 1 ? 'QWAdmin' : null;
+          localStorage.setItem('login-type', role);
+          localStorage.setItem('index','Admin');
+          this.authService.setUserDetails(this.selectedRole);
+          this.route.navigate(['admin/admin-home']);
+        },
+        error:(error:any)=>{
+          this.isSubmitted = false;
+          this.loadingIndicator = false;
+          this.toastr.error('User name or password is incorrect','Error');
+        }
+      })
+    }
+
+  }
+
   public changeRole(event:any){
     this.selectedRole = event.name;
-   // this.selectedRoleId = event.id;
   }
 
 }

@@ -25,6 +25,14 @@ export const routes: Routes = [
     loadComponent: () => import('./Components/exams/exams.component').then(m => m.ExamsComponent),
     canActivate: [CanActiveService],
     data: { accessUsers: [role.studentUser] }
+  },
+  {
+    path: 'admin/admin-home',
+    loadComponent: () => import('./Components/admin/admin-home/admin-home.component').then(m => m.AdminHomeComponent),
+    canActivate: [CanActiveService],
+    data: { accessUsers: [role.adminUser] }
   }
+
+
 ];
 
