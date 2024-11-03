@@ -3,6 +3,10 @@
   background: linear-gradient(to bottom, #3ec7d1, #d7d7d7) !important;
 }
 
+.tick-color{
+  color: #3ec7d1;
+}
+
 .tick-bg{
   background: linear-gradient(to bottom, #3ec7d1, #d7d7d7) !important;
 }
@@ -16,4 +20,10 @@
   border:solid 1px red !important;
 }
 
+.pointer{
+  cursor: pointer;
+}
 
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}

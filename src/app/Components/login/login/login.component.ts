@@ -97,9 +97,9 @@ export class LoginComponent implements OnInit {
           this.loadingIndicator = false;
           const role:any = this.selectedRoleId !== 1 ? 'QWAdmin' : null;
           localStorage.setItem('login-type', role);
-          localStorage.setItem('index','Admin');
+          localStorage.setItem('index','QWAdmin');
           this.authService.setUserDetails(this.selectedRole);
-          this.route.navigate(['admin/admin-home']);
+          this.route.navigate(['admin/home']);
         },
         error:(error:any)=>{
           this.isSubmitted = false;

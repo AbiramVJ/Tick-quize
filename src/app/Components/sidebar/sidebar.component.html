@@ -1,7 +1,25 @@
 
 <div class="list-group" id="list-tab" role="tablist rounded-0">
-  <a class="list-group-item list-group-item-action active rounded-0 border-0 mt-3" id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home" routerLink="student-home">
+
+  <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.studentUser " id="list-home-list" data-bs-toggle="list" href="#list-home"  role="tab" aria-controls="list-home" routerLink="student-home"  routerLinkActive="active">
     <img src="https://cdn-icons-png.flaticon.com/512/3884/3884954.png" width="25px" class="me-2 ms-2" alt=""> Home</a>
+
+  <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home" routerLink="admin/home"  routerLinkActive="active">
+    <img src="https://cdn-icons-png.flaticon.com/512/3884/3884954.png" width="25px" class="me-2 ms-2" alt=""> Home</a>
+
+    <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">
+      <img src="https://cdn-icons-png.flaticon.com/512/476/476863.png" width="25px" class="me-2 ms-2" alt=""> users</a>
+
+      <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home">
+        <img src="https://cdn-icons-png.flaticon.com/512/9913/9913467.png" width="25px" class="me-2 ms-2" alt=""> Exams</a>
+
+        <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" routerLink="admin/category-list" data-bs-toggle="list" href="#list-home" role="tab" aria-controls="list-home" [routerLink]="['admin/category-list']"  routerLinkActive="active">
+          <img src="https://cdn-icons-png.flaticon.com/512/7183/7183999.png" width="25px" class="me-2 ms-2" alt=""> Categories</a>
+
+          <a class="list-group-item list-group-item-action rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser ">
+            <img src="https://cdn-icons-png.flaticon.com/512/2995/2995459.png" width="25px" class="me-2 ms-2" alt=""> Students</a>
+
+
   <a class="list-group-item list-group-item-action rounded-0 mt-3 border-0" id="list-profile-list" data-bs-toggle="list" href="#list-profile" role="tab" aria-controls="list-profile">
     <img src="https://cdn-icons-png.flaticon.com/512/4299/4299209.png" width="25px" class="me-2 ms-2" alt="">
     Profile</a>

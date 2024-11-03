@@ -1,13 +1,13 @@
 
 <div class="row m-0">
-  <div class="row p-0">
-    <div class="col-6 d-flex align-items-center justify-content-center bg-image">
+  <div class="row p-0 bg-image">
+    <div class="col-6 d-flex align-items-center justify-content-center d-none">
       <div>
         <div class="text-center fs-1 text-white fw-bold mt-5">QuizWiz</div>
         <div class="col-12 p-3">
 
         </div>
-      <div class="border tick-shadow p-3 bg-white">
+      <div class="border tick-shadow p-3 bg-white d-none">
         <div class="fs-5 mt-3 mb-3 text-center">Exam Notices</div>
         <ul class="notice-list">
           <li>01. ID and Password Requirement: Ensure you have your ID and password ready before starting the exam.</li>
@@ -20,8 +20,8 @@
       </div>
 
     </div>
-    <div class="col-6 d-flex align-items-center justify-content-center">
-      <div class="w-100">
+    <div class="col-5 d-flex align-items-center justify-content-center mx-auto">
+      <div class="w-100 tick-shadow py-5 bg-white">
         <div class="text-center">
           <img src="https://unicomtic.org/wp-content/uploads/2023/08/UNICOM-TIC_LOGO-1536x580.png" alt="" width="150px">
         </div>
@@ -39,7 +39,7 @@
               <label for="student-id" class="form-label">{{selectedRoleId === 1 ? 'Student Id' : 'user name'}}</label>
               <input type="text" class="form-control" id="email" formControlName="studentId" [ngClass]="{'errorBorder':isSubmitted && loginForm.get('studentId')?.errors}">
             </div>
-            <div class="">
+            <div class="mt-3">
               <label for="exampleInputPassword1" class="form-label">Password</label>
               <input type="password" class="form-control" id="exampleInputPassword1" formControlName="password" [ngClass]="{'errorBorder':isSubmitted && loginForm.get('password')?.errors}">
             </div>
@@ -55,3 +55,4 @@
     </div>
   </div>
 </div>
+

@@ -1,4 +1,4 @@
 export const userRoleNames = {
-  adminUser: 'Admin',
+  adminUser: 'QWAdmin',
   studentUser: 'Student'
 }

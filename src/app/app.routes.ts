@@ -10,6 +10,11 @@ import { CanActiveService } from './Services/can-active.service';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
+    path: 'not-found',
+    loadComponent: () => import('./Components/not-found/not-found.component').then(m => m.NotFoundComponent),
+    canActivate: [CanActiveService],
+  },
+  {
     path: 'login',
     loadComponent: () => import('./Components/login/login/login.component').then(m => m.LoginComponent),
     canActivate: [DeActiveService],data: { accessUsers: [role.studentUser,role.adminUser] }
@@ -27,10 +32,9 @@ export const routes: Routes = [
     data: { accessUsers: [role.studentUser] }
   },
   {
-    path: 'admin/admin-home',
-    loadComponent: () => import('./Components/admin/admin-home/admin-home.component').then(m => m.AdminHomeComponent),
+    path: 'admin',
+    loadChildren:()=> import('./Components/admin/business.routing.module').then(m => m.BusinessRoutingModule),
     canActivate: [CanActiveService],
-    data: { accessUsers: [role.adminUser] }
   }
 
 
