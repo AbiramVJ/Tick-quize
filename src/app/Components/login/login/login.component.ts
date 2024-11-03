@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         identifier: this.loginForm.get('studentId')?.value,
         identifierType: this.selectedRoleId,
         password: this.loginForm.get('password')?.value,
-        role: this.selectedRole,
+        role: 'Student',
     }
     if(this.loginForm.valid){
       this.authService.logIn(body).subscribe({

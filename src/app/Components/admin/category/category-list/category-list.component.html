@@ -43,27 +43,27 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{isUpdate ? 'Edit' : 'Add'}} Category</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-cat" (click)="categoryForm.reset()"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-cat" (click)="categoryForm.reset();isSubmitted = false"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="categoryForm">
           <div class="row">
             <div class="col-12">
               <label for="student-id" class="form-label">Image url</label>
-              <input type="text" class="form-control" id="img-url" formControlName="url" >
+              <input type="text" class="form-control" id="img-url" formControlName="url" [ngClass]="{'errorBorder':isSubmitted && categoryForm.get('url')?.errors}" >
           </div>
             <div class="col-12">
                 <label for="student-id" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" formControlName="name" >
+                <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="{'errorBorder':isSubmitted && categoryForm.get('name')?.errors}">
             </div>
             <div class="col-12">
               <label for="student-id" class="form-label">Description</label>
-              <input type="text" class="form-control" id="desc" formControlName="description" >
+              <input type="text" class="form-control" id="desc" formControlName="description" [ngClass]="{'errorBorder':isSubmitted && categoryForm.get('description')?.errors}">
           </div>
           </div>
         </form>
         <div class="d-flex text-center mt-3">
-          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="categoryForm.reset()">Cancel</button>
+          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="categoryForm.reset(); isSubmitted = false">Cancel</button>
           <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateCategory() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
         </div>
       </div>

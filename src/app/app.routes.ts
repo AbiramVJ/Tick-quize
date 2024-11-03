@@ -10,6 +10,10 @@ import { CanActiveService } from './Services/can-active.service';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
+    path: 'under-contraction',
+    loadComponent: () => import('./Components/Common/under-constraction/under-constraction.component').then(m => m.UnderConstractionComponent),
+  },
+  {
     path: 'not-found',
     loadComponent: () => import('./Components/not-found/not-found.component').then(m => m.NotFoundComponent),
     canActivate: [CanActiveService],

@@ -50,8 +50,8 @@ export class CategoryListComponent implements OnInit {
 
   public submit(){
     this.isSubmitted = true;
-    this.loadingIndicator = true;
     if(this.categoryForm.valid){
+      this.loadingIndicator = true;
       const value = this.categoryForm.value;
       let body = {
         name:value.name,

@@ -101,12 +101,12 @@ export class ExamsComponent {
 
   private timeUp() {
     clearInterval(this.timerInterval);
+    this.submitAnswer();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.timerInterval);
   }
-
 
 
   private preventBackButton() {

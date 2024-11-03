@@ -9,12 +9,12 @@ export class DeActiveService implements CanActivate {
   constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log(this.authService.isLoggedIn());
+    const user = this.authService.getUserType();
     if(!this.authService.isLoggedIn()) {
       return !this.authService.isLoggedIn();
     }
 
-    this.router.navigateByUrl('student-home');
+    user === 'Student' ? this.router.navigateByUrl('student-home') : this.router.navigateByUrl('admin/home');
     return this.authService.isLoggedIn();
 
 
