@@ -1,10 +1,10 @@
 
   <div class="row m-0">
-    <app-topbar *ngIf="isLogIn"></app-topbar>
-    <div class="col-2 p-0 rounded-0 side-bar border-end" *ngIf="isLogIn">
+    <app-topbar *ngIf="isLogIn" class="p-0 top-bar"></app-topbar>
+    <div class="col-2 p-0 rounded-0 side-bar border-end bg-dark" *ngIf="isLogIn">
       <app-sidebar ></app-sidebar>
     </div>
-    <div [ngClass]="isLogIn ? 'col-10' : 'col-12'">
+    <div [ngClass]="isLogIn ? 'col-10' : 'col-12'"  class="main-div" style="height: 100vh; overflow-y: auto;">
       <router-outlet></router-outlet>
     </div>
   </div>

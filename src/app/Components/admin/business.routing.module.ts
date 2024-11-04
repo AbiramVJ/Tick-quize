@@ -20,4 +20,10 @@ export const BusinessRoutingModule: Routes = [
     loadComponent: () => import('./Student/student-list/student-list.component').then(b => b.StudentListComponent),
     data: { accessUsers: [role.adminUser] }
   },
+  {
+    path: 'questions',
+    canActivate: [AuthGuardService],
+    loadComponent: () => import('./questions/questions.component').then(b => b.QuestionsComponent),
+    data: { accessUsers: [role.adminUser] }
+  },
 ];

@@ -1,35 +1,39 @@
 
-<div class="list-group" id="list-tab" role="tablist rounded-0">
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.studentUser " id="list-home-list"  [routerLink]="['student-home']"  routerLinkActive="active">
+<div class="list-group bg-dark text-white" id="list-tab" role="tablist rounded-0">
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.studentUser " id="list-home-list"  [routerLink]="['student-home']"  routerLinkActive="active">
   <img src="https://cdn-icons-png.flaticon.com/512/3884/3884954.png" width="25px" class="me-2 ms-2" alt=""> Home</a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" routerLink="admin/home"  routerLinkActive="active">
-  <img src="https://cdn-icons-png.flaticon.com/512/3884/3884954.png" width="25px" class="me-2 ms-2" alt=""> Home</a>
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" routerLink="admin/home"  routerLinkActive="active">
+  <img src="https://cdn-icons-png.flaticon.com/512/8323/8323511.png" width="25px" class="me-2 ms-2" alt=""> Dashboard</a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser" id="list-home-list"  routerLink="under-contraction"  routerLinkActive="active">
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser" id="list-home-list"  routerLink="under-contraction"  routerLinkActive="active">
   <img src="https://cdn-icons-png.flaticon.com/512/476/476863.png" width="25px" class="me-2 ms-2" alt=""> users
   </a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list">
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " id="list-home-list">
   <img src="https://cdn-icons-png.flaticon.com/512/9913/9913467.png" width="25px" class="me-2 ms-2" alt=""> Exams</a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" routerLink="admin/category-list" [routerLink]="['admin/category-list']"  routerLinkActive="active">
+
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" [routerLink]="['admin/questions']"  routerLinkActive="active">
+    <img src="https://cdn-icons-png.flaticon.com/512/9913/9913467.png" width="25px" class="me-2 ms-2" alt=""> Questions</a>
+
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " id="list-home-list" routerLink="admin/category-list" [routerLink]="['admin/category-list']"  routerLinkActive="active">
   <img src="https://cdn-icons-png.flaticon.com/512/7183/7183999.png" width="25px" class="me-2 ms-2" alt=""> Categories</a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3" *ngIf="loginUser === userRoles.adminUser " [routerLink]="['admin/student-list']"  routerLinkActive="active">
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " [routerLink]="['admin/student-list']"  routerLinkActive="active">
   <img src="https://cdn-icons-png.flaticon.com/512/2995/2995459.png" width="25px" class="me-2 ms-2" alt=""  >Students</a>
 
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0" id="list-profile-list"  aria-controls="list-profile" >
+  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-profile-list"  aria-controls="list-profile" >
   <img src="https://cdn-icons-png.flaticon.com/512/4299/4299209.png" width="25px" class="me-2 ms-2" alt="">
   Profile</a>
-  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0" id="list-messages-list"  routerLinkActive="active"aria-controls="list-messages">
+  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 bg-dark text-white border-0" id="list-messages-list"  routerLinkActive="active"aria-controls="list-messages">
   <img src="https://cdn-icons-png.flaticon.com/512/1162/1162914.png" width="25px" class="me-2 ms-2" alt="">
   Result</a>
-  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0" id="list-settings-list" aria-controls="list-settings">
+  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-settings-list" aria-controls="list-settings">
   <img src="https://cdn-icons-png.flaticon.com/512/8738/8738632.png" width="25px" class="me-2 ms-2" alt="">
   Settings</a>
-  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0" id="list-settings-list"  aria-controls="list-settings"  data-bs-toggle="modal" data-bs-target="#logout-modal">
+  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-settings-list"  aria-controls="list-settings"  data-bs-toggle="modal" data-bs-target="#logout-modal">
     <img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" width="25px" class="me-2 ms-2" alt="">
     Logout</a>
 </div>
