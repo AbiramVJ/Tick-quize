@@ -58,4 +58,8 @@ export class ExamService {
     localStorage.removeItem('answer');
   }
 
+  public addQuestion(body:any){
+    return this.http.post<any>(`${this.baseUrl}Question`, body);
+  }
+
 }

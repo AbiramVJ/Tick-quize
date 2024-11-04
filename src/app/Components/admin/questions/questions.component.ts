@@ -1,12 +1,137 @@
-import { Component } from '@angular/core';
+import { ExamService } from './../../../Services/exam.service';
+import { Category } from './../../../Models/category';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgLabelTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
+import { CategoryService } from '../../../Services/category.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-questions',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,FormsModule,NgSelectComponent,NgLabelTemplateDirective,],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
 })
-export class QuestionsComponent {
+export class QuestionsComponent implements OnInit {
+
+  public isUpdate:boolean = false;
+  public questionForms!:FormGroup;
+  public isSubmitted:boolean = false;
+  public loadingIndicator:boolean = false;
+
+  public selectedCatId:any;
+  public cAnswer:number = 0;
+
+  public category:Category[] = []
+
+  constructor(private fb:FormBuilder,
+    private categoryService:CategoryService,
+    private toastr: ToastrService,
+    private examService:ExamService
+  ){
+
+  }
+  ngOnInit(): void {
+   this.questionFormInit();
+   this._getAllCategories();
+  }
+
+
+  private questionFormInit(){
+    this.questionForms = this.fb.group({
+      name:['',[Validators.required]],
+      type:[''],
+      option1:['',[Validators.required]],
+      option2:['',[Validators.required]],
+      option3:['',[Validators.required]],
+      option4:['',[Validators.required]],
+    })
+  }
+
+  public _updateQuestions(){
+
+  }
+
+  public submit(){
+    this.isSubmitted = true;
+    let body = this.prepareBody();
+    if(this.questionForms.valid){
+      this.examService.addQuestion(body).subscribe({
+        next:(res) => {
+          this.isSubmitted = false;
+          this.toastr.success('success', 'question added scussfully');
+        },
+        complete:() => {
+          this.loadingIndicator = false;
+          var modalElement: HTMLElement = document.getElementById('close-ques')as HTMLElement;
+          if(modalElement !== null){
+            modalElement.click();
+          }
+        },
+        error:(error:any) => {
+          this.loadingIndicator = false;
+          this.isSubmitted = false;
+          this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+        }
+      })
+    }
+  }
+
+  public changeCategory(event:any){
+
+  }
+
+  public prepareBody(){
+    const formsValue = this.questionForms.value;
+    let body = {
+      name : formsValue.name,
+      type:1,
+      categoryIds: [this.selectedCatId],
+      answerOptions: [
+        {
+          name: formsValue.option1,
+          isCorrect: this.cAnswer === 1 ? true : false,
+        },
+        {
+          name: formsValue.option2,
+          isCorrect:  this.cAnswer === 2 ? true : false,
+        },
+        {
+          name: formsValue.option2,
+          isCorrect:  this.cAnswer === 3 ? true : false,
+        },
+        {
+          name: formsValue.option2,
+          isCorrect:  this.cAnswer === 4 ? true : false,
+        }
+      ]
+
+    }
+    return body;
+  }
+
+  public correctAnswer(event:any){
+    this.cAnswer = event;
+  }
+
+  private _getAllCategories(){
+    this.loadingIndicator = true;
+    this.categoryService.getAllCategoriesList().subscribe({
+      next:(res) => {
+        this.category = res;
+        this.selectedCatId = this.category[0].id;
+      },
+      complete:() => {
+        this.loadingIndicator = false;
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+
+    })
+  }
 
 }

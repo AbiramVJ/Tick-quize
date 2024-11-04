@@ -1,6 +1,6 @@
 
 <div class="row mt-3">
-  <div class="col-10 mx-auto p-0">
+  <div class="col-11 mx-auto p-0">
     <div class="p-0 d-flex justify-content-between">
       <div class="fs-4 fw-bold p-0">
         Categories
@@ -14,8 +14,8 @@
 
 
 <div class="row mt-5">
-  <div class="col-10 mx-auto">
-    <div class="row tick-shadow p-2 rounded mt-3" *ngFor="let c of category | paginate: { itemsPerPage:pageSize , currentPage: currentPage }; let i = index">
+  <div class="col-11 bg-white body-card mx-auto">
+    <div class="row tick-shadow p-2 rounded mt-3 " *ngFor="let c of category | paginate: { itemsPerPage:pageSize , currentPage: currentPage }; let i = index">
       <div class="col-3 p-0">
           <img src="https://miro.medium.com/v2/resize:fit:1400/1*APHbyV5NslWeMSn7PxpF6Q.png" alt="" width="50%">
       </div>
@@ -30,13 +30,14 @@
         </div>
       </div>
     </div>
-    <div class="row mt-5">
-      <div class="col-12 float-right d-flex justify-content-end">
-        <pagination-controls
-        [maxSize]="5"
-        (pageChange)="onPageChange($event)"
-        [previousLabel]="'Prev'" ></pagination-controls>
-      </div>
+
+  </div>
+  <div class="row mt-5">
+    <div class="col-12 float-right d-flex justify-content-end">
+      <pagination-controls
+      [maxSize]="5"
+      (pageChange)="onPageChange($event)"
+      [previousLabel]="'Prev'" ></pagination-controls>
     </div>
   </div>
 </div>

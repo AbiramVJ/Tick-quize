@@ -26,6 +26,18 @@ export class CategoryService {
     );
   }
 
+  public getAllCategoriesList(){
+    return this.http.get<any>(`${this.baseUrl}Category/getall`).pipe(
+      map((res: any) => {
+        if (res) {
+          return res.Result.map((c:any)=> new Category(c));
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
   public addCategory(body:any){
     return this.http.post<any>(`${this.baseUrl}Category`, body);
   }
@@ -38,4 +50,6 @@ export class CategoryService {
   public deleteCategory(id:string){
     return this.http.delete<any>(`${this.baseUrl}Category?id=${id}`);
   }
+
+  
 }
