@@ -1,14 +1,32 @@
-.side-bar{
- height: 100vh;
-// position: fixed;
-// top: 73px;
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  height: 56px;
+  width: 100%;
 }
-// .top-bar{
-//   position: fixed;
-//   z-index: 99;
-// }
-// .main-div{
-//   position: relative;
-//   right: -244px;
-//   top: 73px;
-// }
+
+.fixed-left {
+  position: fixed;
+  top: 73px;
+  left: 0;
+  bottom: 0;
+  z-index: 1020;
+  width: 240px;
+  background-color: #343a40;
+}
+
+
+.main-div {
+  padding-top: 84px;
+  margin-left: 240px;
+  //overflow-y: auto;
+ // height: 100vh;
+}
+
+router-outlet {
+//  padding: 20px;
+}

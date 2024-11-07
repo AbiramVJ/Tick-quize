@@ -26,4 +26,10 @@ export const BusinessRoutingModule: Routes = [
     loadComponent: () => import('./questions/questions.component').then(b => b.QuestionsComponent),
     data: { accessUsers: [role.adminUser] }
   },
+  {
+    path: 'exam-list',
+    canActivate: [AuthGuardService],
+    loadComponent: () => import('./exam/add-exam/add-exam.component').then(b => b.AddExamComponent),
+    data: { accessUsers: [role.adminUser] }
+  },
 ];

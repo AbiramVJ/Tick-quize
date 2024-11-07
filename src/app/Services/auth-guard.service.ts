@@ -18,7 +18,7 @@ export class AuthGuardService {
     const user = this.authService.getUserType();
     const routeUserAccess = route.data['accessUsers'];
 
-    console.log(routeUserAccess, user);
+  //  console.log(routeUserAccess, user);
 
     if (routeUserAccess.includes(user)) {
       return true;

@@ -1,1 +1,216 @@
-<p>add-exam works!</p>
+<div class="row mt-3">
+  <div class="col-11 mx-auto p-0">
+    <div class="p-0 d-flex justify-content-between">
+      <div class="fs-4 fw-bold p-0">
+        Exam
+      </div>
+      <div class="">
+        <button class="btn tick-button fw-bold text-white"  data-bs-toggle="modal" data-bs-target="#add-exam" (click)="addExam()">Add Exam</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-11 bg-white body-card mx-auto">
+    <div class="row tick-shadow p-2 rounded mt-3" *ngFor="let e of exam">
+      <div class="col-3">
+        <img src="https://miro.medium.com/v2/resize:fit:1400/1*APHbyV5NslWeMSn7PxpF6Q.png" alt="" width="50%">
+      </div>
+      <div class="col-2 d-flex align-items-center">{{e.name}}</div>
+      <div class="col-2 d-flex align-items-center">{{e.date}}</div>
+      <div class="col-2 d-flex align-items-center">{{e.duration}} {{e.isActive}}</div>
+      <div class="col-3 d-flex align-items-center justify-content-end">
+        <div class="d-flex">
+          <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color" data-bs-toggle="modal" data-bs-target="#add-exam" (click)="setEditFormsValue(e)" ></i></div>
+          <div class="pointer"><i class="far fa-trash-alt text-danger" aria-hidden="true" data-bs-toggle="modal" data-bs-target="#delete-Exam" (click)="deleteId = e.id"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-exam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{isUpdate ? 'Edit' : 'Add'}} Exam</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-cat" (click)="examForm.reset();closeModelProperties()"></button>
+      </div>
+      <div class="modal-body p-3">
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" [style.width.%]="completePercentage" [attr.aria-valuenow]="completePercentage" aria-valuemin="0" aria-valuemax="100"> {{completePercentage}}%</div>
+        </div>
+        <form [formGroup]="examForm">
+          <div class="row" *ngIf="step === 1">
+            <div class="col-12 mt-3">
+              <label for="image-url" class="form-label">Image URL</label>
+              <input type="text" class="form-control" id="image-url" formControlName="imageUrl"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('imageUrl')?.errors}">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name" formControlName="name"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('name')?.errors}">
+            </div>
+
+            <div class="col-12 mt-3">
+              <label for="is-active" class="form-label">Is Active</label>
+              <input type="checkbox" class="form-check-input" id="is-active" formControlName="isActive"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('isActive')?.errors}">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="question-type" class="form-label">Question Type</label>
+              <input type="number" class="form-control" id="question-type" formControlName="questionType"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('questionType')?.errors}">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="date" class="form-label">Date</label>
+              <input type="date" class="form-control" id="date" formControlName="date"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('date')?.errors}">
+            </div>
+            <div class="col-12 mt-3">
+              <label for="duration" class="form-label">Duration</label>
+              <input type="number" class="form-control" id="duration" formControlName="duration"
+                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('duration')?.errors}">
+            </div>
+          </div>
+        </form>
+
+         <!-- STEP 2 -->
+         <div class="row mt-3" *ngIf="step === 2">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-6">
+                <div class="fs-4 fw-bold">Count</div>
+                <div class="p-2 tick-shadow rounded mt-3">
+                  <div class="row m-0" *ngIf="selectedCategory.length > 0">
+                    <div class="col-12 border mt-2 exam-box-height" *ngFor="let c of selectedCategory">
+                      <div class="d-flex justify-content-between p-2">
+                        <div>{{c.name}}</div>
+                        <div class="d-flex justify-content-end">
+                          <input type="number" class="form-control w-50 no-arrows" id="count" [(ngModel)]="c.questionCount"  [ngClass]="{'errorBorder': isSubmitted && c.questionCount < 1}" >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="selectedCategory.length === 0">
+                    <div class="col-12 text-center p-3">
+                      <div class="fs-6 fw-bold">Empty!</div>
+                      <img src="https://cdn-icons-png.flaticon.com/512/7486/7486747.png" alt="" width="200px">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="fs-4 fw-bold">Categories</div>
+                <div class="p-2 tick-shadow rounded mt-3">
+                  <div class="row m-0">
+                    <div class="col-12 border mt-2 p-2 exam-box-height" *ngFor="let c of categories">
+                      <div class="d-flex justify-content-between p-2">
+                        <div>{{c.name}}</div>
+                        <div>
+                          <input type="checkbox" class="form-check-input pointer" id="is-checked" [checked]="c.isChecked" (click)="selectCategory(c)">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <!-- STEP -3 -->
+        <div class="row mt-3" *ngIf="step === 3">
+          <div class="col-12">
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item mt-3">
+                <h2 class="accordion-header" id="headingOne" >
+                  <div class="row m-0" >
+                    <div class="col-12 border" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <div class="d-flex justify-content-between">
+                        <div class="text-sm p-3">C#</div>
+                        <div class="p-3 text-sm">12</div>
+                      </div>
+                    </div>
+                  </div>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="p-3">
+                    <div class="row">
+                      <div class="col-12 mt-3">
+                        <div class="border p-2 rounded">
+                          <div class="d-flex justify-content-between">
+                            <div>
+                              What is Angular ?
+                            </div>
+                            <div>
+                             <input type="checkbox" class="form-check-input pointer" id="is-select">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-3">
+                        <div class="border p-2 rounded">
+                          <div class="d-flex justify-content-between">
+                            <div>
+                              What is Angular ?
+                            </div>
+                            <div>
+                             <input type="checkbox" class="form-check-input pointer" id="is-select">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end mt-3">
+          <!-- <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="examForm.reset(); isSubmitted = false">Cancel</button> -->
+          <button type="button" class="btn tick-button px-5 me-2" *ngIf="step == 2" (click)="changeStep(1)" [disabled]="loadingIndicator">Back</button>
+
+          <button type="button" class="btn tick-button px-5 me-2" *ngIf="step == 3" (click)="changeStep(2)" [disabled]="loadingIndicator">Back</button>
+
+          <button type="button" class="btn tick-button px-5" *ngIf="step === 1" (click)="changeStep(2)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Next</button>
+
+          <button type="button" class="btn tick-button px-5" *ngIf="step === 2" (click)="changeStep(3)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="delete-Exam" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-delete"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img src="https://freesvgillustration.com/wp-content/uploads/2022/03/Delete-Confirmation-1.png" alt="" width="350px">
+          <div class="fs-4">
+            Are you sure want to delete this Exam ?
+          </div>
+        </div>
+        <div class="d-flex text-center mt-3">
+          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn tick-button w-50" (click)="deleteExam()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

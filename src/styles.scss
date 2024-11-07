@@ -34,3 +34,18 @@ body {
   border-radius: 11px;
   padding: 35px !important;
 }
+
+/* Hide the increment and decrement buttons on number input */
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-arrows {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.text-sm{
+  font-size: 14px;
+}

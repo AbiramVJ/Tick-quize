@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
    // this.authService.removeItems();
   //  this.authService.setUserDetails(null);
     this.authService.logout();
+    
   }
 
 }

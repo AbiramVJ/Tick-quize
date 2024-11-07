@@ -10,7 +10,7 @@
   <img src="https://cdn-icons-png.flaticon.com/512/476/476863.png" width="25px" class="me-2 ms-2" alt=""> users
   </a>
 
-  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white" *ngIf="loginUser === userRoles.adminUser " id="list-home-list">
+  <a class="list-group-item list-group-item-action pointer rounded-0 border-0 mt-3 bg-dark text-white"  [routerLink]="['admin/exam-list']"  routerLinkActive="active" *ngIf="loginUser === userRoles.adminUser " id="list-home-list">
   <img src="https://cdn-icons-png.flaticon.com/512/9913/9913467.png" width="25px" class="me-2 ms-2" alt=""> Exams</a>
 
 
@@ -33,7 +33,7 @@
   <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-settings-list" aria-controls="list-settings">
   <img src="https://cdn-icons-png.flaticon.com/512/8738/8738632.png" width="25px" class="me-2 ms-2" alt="">
   Settings</a>
-  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-settings-list"  aria-controls="list-settings"  data-bs-toggle="modal" data-bs-target="#logout-modal">
+  <a class="list-group-item list-group-item-action pointer rounded-0 mt-3 border-0 bg-dark text-white" id="list-settings-list"  aria-controls="list-settings"  (click)="logout()" [routerLink]="['/login']" >
     <img src="https://cdn-icons-png.flaticon.com/512/1828/1828490.png" width="25px" class="me-2 ms-2" alt="">
     Logout</a>
 </div>
@@ -41,8 +41,8 @@
 
 
 
-<div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="logout-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+<div class="modal-dialog modal-dialog-centered" style="z-index: 9999;">
 <div class="modal-content">
   <div class="modal-body">
     <div class="text-center">
@@ -53,7 +53,7 @@
     </div>
     <div class="d-flex text-center mt-3">
       <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal">No</button>
-      <button type="button" class="btn tick-button w-50" data-bs-dismiss="modal" (click)="logout()" [routerLink]="['/login']">Yes</button>
+      <button type="button" class="btn tick-button w-50" data-bs-dismiss="modal">Yes</button>
     </div>
   </div>
 </div>

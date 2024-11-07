@@ -13,7 +13,7 @@ export class CanActiveService implements CanActivate {
     const routeUserAccess = route.data['accessUsers'];
     const loginUserType = this.authService.getUserType();
 
-    console.log(routeUserAccess,loginUserType)
+   // console.log(routeUserAccess,loginUserType)
 
     if(this.authService.isLoggedIn()) {
       return this.authService.isLoggedIn();

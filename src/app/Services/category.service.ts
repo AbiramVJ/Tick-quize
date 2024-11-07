@@ -18,7 +18,7 @@ export class CategoryService {
     return this.http.get<any>(`${this.baseUrl}Category/getall?pageSize=${pageSize}&pageNo=${pageNumber}`).pipe(
       map((res: any) => {
         if (res) {
-          return res.Result.map((c:any)=> new Category(c));
+          return res.Result.data.map((c:any)=> new Category(c));
         } else {
           return [];
         }
@@ -30,7 +30,8 @@ export class CategoryService {
     return this.http.get<any>(`${this.baseUrl}Category/getall`).pipe(
       map((res: any) => {
         if (res) {
-          return res.Result.map((c:any)=> new Category(c));
+
+          return res.Result.data.map((c:any)=> new Category(c));
         } else {
           return [];
         }
@@ -51,5 +52,5 @@ export class CategoryService {
     return this.http.delete<any>(`${this.baseUrl}Category?id=${id}`);
   }
 
-  
+
 }
