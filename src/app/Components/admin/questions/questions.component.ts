@@ -6,25 +6,43 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { NgLabelTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { CategoryService } from '../../../Services/category.service';
 import { ToastrService } from 'ngx-toastr';
+import { QuestionList } from '../../../Models/examQuestions';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { BehaviorSubject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-questions',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule,FormsModule,NgSelectComponent,NgLabelTemplateDirective,],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,FormsModule,NgSelectComponent,NgLabelTemplateDirective,NgxPaginationModule],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
 })
 export class QuestionsComponent implements OnInit {
-
+  public searchValue = new BehaviorSubject<any>(null);
   public isUpdate:boolean = false;
   public questionForms!:FormGroup;
   public isSubmitted:boolean = false;
   public loadingIndicator:boolean = false;
 
+  public searchText:string = '';
+
   public selectedCatId:any;
   public cAnswer:number = 0;
 
-  public category:Category[] = []
+  //public pageSize:number = ;
+ //pagination
+ public totalCount:number = 0;
+ public itemsPerPage:number = 5;
+ public currentPage:number = 1;
+
+ public params = {
+  itemsPerPage : this.itemsPerPage,
+  pageNumber:this.currentPage,
+  searchText:this.searchText,
+  categoryId:null,
+}
+  public category:Category[] = [];
+  public questions:QuestionList[] = [];
 
   constructor(private fb:FormBuilder,
     private categoryService:CategoryService,
@@ -36,6 +54,11 @@ export class QuestionsComponent implements OnInit {
   ngOnInit(): void {
    this.questionFormInit();
    this._getAllCategories();
+   this.searchValue.pipe(debounceTime(1000)).subscribe(searchText => {
+    if (searchText != null) {
+      this.getSearchActivities(searchText);
+    }
+  });
   }
 
 
@@ -69,6 +92,7 @@ export class QuestionsComponent implements OnInit {
           if(modalElement !== null){
             modalElement.click();
           }
+          this._getAllQuestions();
         },
         error:(error:any) => {
           this.loadingIndicator = false;
@@ -125,6 +149,14 @@ export class QuestionsComponent implements OnInit {
       },
       complete:() => {
         this.loadingIndicator = false;
+        this.params = {
+          itemsPerPage : this.itemsPerPage,
+          pageNumber:this.currentPage,
+          searchText:this.searchText,
+          categoryId:this.selectedCatId,
+        }
+        this._getAllQuestions();
+
       },
       error:(error:any) => {
         this.loadingIndicator = false;
@@ -132,6 +164,57 @@ export class QuestionsComponent implements OnInit {
       }
 
     })
+  }
+
+  private _getAllQuestions(){
+    this.loadingIndicator = true;
+    this.categoryService.getAllQuestions(this.params).subscribe({
+      next:(res:any) => {
+        this.questions = res.data;
+        this.totalCount = res.totalCount;
+      },
+      complete:() => {
+        this.loadingIndicator = false;
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+
+    })
+  }
+
+  public filterQuestion(){
+    this.params.categoryId = this.selectedCatId;
+    this._getAllQuestions();
+  }
+
+  public searchQuestions(searchText:string){
+    this.searchValue.next(searchText);
+  }
+
+  public getSearchActivities(searchText:string){
+    this.params.pageNumber = 1;
+    this.currentPage = 1;
+    this.params.searchText = searchText;
+    this._getAllQuestions();
+
+  }
+
+   //PAGINATION
+   public changePerPageValue(){
+      this.currentPage = 1;
+      this.params.itemsPerPage = this.itemsPerPage;
+      this.params.pageNumber = 1;
+      if(this.itemsPerPage > 0 ){
+        this._getAllQuestions();
+      }
+  }
+
+  public onPageChange(event:any){
+    this.currentPage = event;
+    this.params.pageNumber = this.currentPage;
+    this._getAllQuestions();
   }
 
 }

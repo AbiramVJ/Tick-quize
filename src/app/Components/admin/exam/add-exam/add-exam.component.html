@@ -45,36 +45,30 @@
         </div>
         <form [formGroup]="examForm">
           <div class="row" *ngIf="step === 1">
+            <div class="col-12 mt-3 d-flex justify-content-end">
+              <input type="checkbox" class="form-check-input" id="is-active" formControlName="isActive" [ngClass]="{'errorBorder': isSubmitted && examForm.get('isActive')?.errors}">
+              <label for="is-active" class="form-label ms-2">Active</label>
+            </div>
             <div class="col-12 mt-3">
               <label for="image-url" class="form-label">Image URL</label>
-              <input type="text" class="form-control" id="image-url" formControlName="imageUrl"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('imageUrl')?.errors}">
+              <input type="text" class="form-control" id="image-url" formControlName="imageUrl" [ngClass]="{'errorBorder': isSubmitted && examForm.get('imageUrl')?.errors}">
             </div>
             <div class="col-12 mt-3">
               <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-control" id="name" formControlName="name"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('name')?.errors}">
+              <input type="text" class="form-control" id="name" formControlName="name" [ngClass]="{'errorBorder': isSubmitted && examForm.get('name')?.errors}">
             </div>
 
             <div class="col-12 mt-3">
-              <label for="is-active" class="form-label">Is Active</label>
-              <input type="checkbox" class="form-check-input" id="is-active" formControlName="isActive"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('isActive')?.errors}">
-            </div>
-            <div class="col-12 mt-3">
               <label for="question-type" class="form-label">Question Type</label>
-              <input type="number" class="form-control" id="question-type" formControlName="questionType"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('questionType')?.errors}">
+              <input type="number" class="form-control" id="question-type" formControlName="questionType" [ngClass]="{'errorBorder': isSubmitted && examForm.get('questionType')?.errors}">
             </div>
             <div class="col-12 mt-3">
               <label for="date" class="form-label">Date</label>
-              <input type="date" class="form-control" id="date" formControlName="date"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('date')?.errors}">
+              <input type="date" class="form-control" id="date" formControlName="date" [ngClass]="{'errorBorder': isSubmitted && examForm.get('date')?.errors}">
             </div>
             <div class="col-12 mt-3">
-              <label for="duration" class="form-label">Duration</label>
-              <input type="number" class="form-control" id="duration" formControlName="duration"
-                     [ngClass]="{'errorBorder': isSubmitted && examForm.get('duration')?.errors}">
+              <label for="duration" class="form-label">Duration (mins)</label>
+              <input type="number" class="form-control" id="duration" formControlName="duration" [ngClass]="{'errorBorder': isSubmitted && examForm.get('duration')?.errors}">
             </div>
           </div>
         </form>
@@ -112,7 +106,7 @@
                       <div class="d-flex justify-content-between p-2">
                         <div>{{c.name}}</div>
                         <div>
-                          <input type="checkbox" class="form-check-input pointer" id="is-checked" [checked]="c.isChecked" (click)="selectCategory(c)">
+                          <input type="checkbox" class="form-check-input pointer" id="is-checked" [checked]="c.isChecked" (click)="selectCategory(c); c.isChecked = !c.isChecked">
                         </div>
                       </div>
                     </div>
@@ -129,13 +123,13 @@
         <div class="row mt-3" *ngIf="step === 3">
           <div class="col-12">
             <div class="accordion" id="accordionExample">
-              <div class="accordion-item mt-3">
+              <div class="accordion-item mt-3" *ngFor="let q of categoryWithQuestions">
                 <h2 class="accordion-header" id="headingOne" >
                   <div class="row m-0" >
                     <div class="col-12 border" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                       <div class="d-flex justify-content-between">
-                        <div class="text-sm p-3">C#</div>
-                        <div class="p-3 text-sm">12</div>
+                        <div class="text-sm p-3">{{q.name}}</div>
+                        <div class="p-3 text-sm">{{q.questionCount}} of {{q.selectedCount}}</div>
                       </div>
                     </div>
                   </div>
@@ -143,27 +137,14 @@
                 <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                   <div class="p-3">
                     <div class="row">
-                      <div class="col-12 mt-3">
-                        <div class="border p-2 rounded">
+                      <div class="col-12 mt-3" *ngFor="let a of q.questions">
+                        <div class="border p-2 rounded"  [ngClass]="{'div-disabled':q.questionCount <= q.selectedCount && !a.isAlreadyAdded}">
                           <div class="d-flex justify-content-between">
                             <div>
-                              What is Angular ?
+                              {{a.name}}
                             </div>
                             <div>
-                             <input type="checkbox" class="form-check-input pointer" id="is-select">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-12 mt-3">
-                        <div class="border p-2 rounded">
-                          <div class="d-flex justify-content-between">
-                            <div>
-                              What is Angular ?
-                            </div>
-                            <div>
-                             <input type="checkbox" class="form-check-input pointer" id="is-select">
+                             <input type="checkbox" class="form-check-input pointer" id="is-select" [checked]="a.isAlreadyAdded" (click)="assignQuestions(q, a.id); a.isAlreadyAdded = !a.isAlreadyAdded;">
                             </div>
                           </div>
                         </div>
@@ -186,6 +167,8 @@
           <button type="button" class="btn tick-button px-5" *ngIf="step === 1" (click)="changeStep(2)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Next</button>
 
           <button type="button" class="btn tick-button px-5" *ngIf="step === 2" (click)="changeStep(3)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Next</button>
+
+          <button type="button" class="btn tick-button px-5" *ngIf="step === 3" (click)="changeStep(4)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span>{{isEditFlow ? 'Update' : 'Create' }} </button>
         </div>
       </div>
     </div>

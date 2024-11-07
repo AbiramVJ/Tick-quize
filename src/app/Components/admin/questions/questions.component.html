@@ -13,9 +13,24 @@
 </div>
 
 <div class="row mt-3">
+    <div class="col-11 mx-auto">
+      <div class="row mt-3">
+        <div class="col-4 p-0">
+          <div class="">Category</div>
+          <ng-select [items]="category" bindLabel="name" bindValue="id" [(ngModel)]="selectedCatId" [clearable]="false" (ngModelChange)="filterQuestion()"> </ng-select>
+        </div>
+        <!-- <div class="col-4">
+          <div>Search</div>
+          <input type="text" class="form-control" placeholder="Search"  [(ngModel)]="searchText" (keyup)="searchQuestions(searchText)">
+        </div> -->
+      </div>
+    </div>
+</div>
+
+<div class="row mt-3">
   <div class="col-11 mx-auto body-card">
-    <div class="row tick-shadow p-4 rounded mt-3 bg-white">
-      <div class="col-6">Qname</div>
+    <div class="row tick-shadow p-4 rounded mt-3 bg-white" *ngFor="let q of questions | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
+      <div class="col-6">{{q.name}}</div>
       <div class="col-6">
         <div class="d-flex justify-content-end">
           <div class="d-flex">
@@ -28,6 +43,23 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-11 mx-auto">
+    <div class="row">
+      <div class="col-1 p-0">
+        <label>Page size</label>
+        <input type="number" class="form-control" [(ngModel)]="itemsPerPage"  min="1" (ngModelChange)="changePerPageValue()">
+      </div>
+      <div class="col-11 float-right d-flex justify-content-end">
+        <pagination-controls
+        (pageChange)="onPageChange($event)"
+        [previousLabel]="'Prev'" ></pagination-controls>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 

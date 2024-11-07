@@ -2,7 +2,7 @@ import { routes } from './../app.routes';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs';
-import { Question } from '../Models/examQuestions';
+import { Question, QuestionList } from '../Models/examQuestions';
 import { Category } from '../Models/category';
 
 @Injectable({
@@ -50,6 +50,21 @@ export class CategoryService {
 
   public deleteCategory(id:string){
     return this.http.delete<any>(`${this.baseUrl}Category?id=${id}`);
+  }
+
+  public getAllQuestions(params:any){
+    return this.http.get<any>(`${this.baseUrl}Question/getall?pageSize=${params.itemsPerPage}&pageNo=${params.pageNumber}&categoryId=${params.categoryId}`).pipe(
+      map((res: any) => {
+        if (res) {
+          return {
+            data: res.Result.data.map((c: any) => new QuestionList(c)),
+            totalCount: res.Result.totalCount
+          };
+        } else {
+          return [];
+        }
+      })
+    );
   }
 
 

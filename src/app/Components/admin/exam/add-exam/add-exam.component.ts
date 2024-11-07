@@ -36,6 +36,8 @@ export class AddExamComponent implements OnInit {
   public exam:Exam[] = [];
   public categories:Category[] = [];
   public selectedCategory:any [] = [];
+  public categoryWithQuestions:any [] = [];
+  public assignQuestionsIds:any[] = [];
 
   constructor(private examService:ExamService,
     private toastr: ToastrService,
@@ -55,9 +57,9 @@ export class AddExamComponent implements OnInit {
       imageUrl: ['', Validators.required],
       name: ['', Validators.required],
       isActive: [false],
-      questionType: [0, Validators.required],
+      questionType: [1, Validators.required],
       date: ['', Validators.required],
-      duration: [0, [Validators.required, Validators.min(0)]]
+      duration: [15, [Validators.required, Validators.min(0)]]
     });
   }
 
@@ -100,10 +102,29 @@ export class AddExamComponent implements OnInit {
      this.step = 1;
      this.completePercentage = 30;
     }else if(step === 2){
-     this.isEditFlow ? this._editExam() : this._createExam();
+     if(this.isEditFlow){
+      if(this.examForm.touched){
+        this._editExam()
+      }else{
+        this.step = 2;
+        this.completePercentage = 30;
+        this.assignQuestionsIds = [];
+        this.categoryWithQuestions = [];
+        this._getAllExam();
+        this._getAssignCategory();
+      }
+     }else{
+      this._createExam();
+     }
     }else if(step === 3){
-
       this._assignCategoryToQuestion();
+    }else if(step = 4){
+     let isValid =  this.categoryWithQuestions.some((cat:any) => cat.selectedCount < cat.questionCount );
+     if(!isValid){
+      this._completeExamCreation();
+     }else{
+      this.toastr.warning('some of questions are not added please check','Warring!');
+     }
     }
   }
 
@@ -138,6 +159,7 @@ export class AddExamComponent implements OnInit {
         this.examService.addExam(this.examForm.value).subscribe({
           next:(res) => {
             this.isExamCreated = true;
+            this.examId = res.Result.id;
             this.toastr.success('success', 'Exam created successfully');
           },
           complete:() => {
@@ -150,14 +172,15 @@ export class AddExamComponent implements OnInit {
             this.loadingIndicator = false;
             this.isSubmitted = false;
             this.isExamCreated = false;
-
             this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
           }
         })
       }else{
         this.step = 2;
         this.completePercentage = 60;
-        this._editExam();
+        if(this.examForm.touched){
+          this._editExam();
+        }
       }
 
     }
@@ -193,9 +216,7 @@ export class AddExamComponent implements OnInit {
   // API CALLS : ASSIGN CATEGORY COUNT FOR EXAM- 2
   private _assignCategoryToQuestion(){
     this.isSubmitted = true;
-    console.log(this.selectedCategory)
     const isValidBody = this.selectedCategory.some((c: any) => c.questionCount === 0 || c.questionCount === null);
-    console.log(isValidBody)
     if(!isValidBody && this.selectedCategory.length > 0  ){
       this.loadingIndicator = true;
       const body = this.selectedCategory.map((c:any) => {
@@ -213,6 +234,7 @@ export class AddExamComponent implements OnInit {
           this.isSubmitted = false;
           this.step = 3;
           this.completePercentage = 60;
+          this.getAllCategoryWithAnswer();
         },
         error:(error:any) => {
           this.loadingIndicator = false;
@@ -276,6 +298,77 @@ export class AddExamComponent implements OnInit {
     this.selectedCategory = [];
     this.step = 1;
     this.completePercentage = 30;
+  }
+
+
+  public getAllCategoryWithAnswer(){
+    this.examService.getAssignCategory(this.examId).subscribe({
+      next:(res:any) =>{
+        let preparedArray = res.map((cat: any) => {
+          cat.selectedCount = 0;
+          cat.questions.forEach((q: any) => {
+              if (q.isAlreadyAdded) {
+                this.assignQuestionsIds.push(q.id);
+                  cat.selectedCount += 1;
+              }
+          });
+          return cat;
+      });
+        this.categoryWithQuestions = preparedArray;
+      },
+      complete:()=>{
+
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.isSubmitted = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+    })
+  }
+
+  public assignQuestions(q: any, id: string) {
+
+    if (!this.assignQuestionsIds.includes(id)) {
+      this.assignQuestionsIds.push(id);
+    } else {
+      this.assignQuestionsIds = this.assignQuestionsIds.filter(item => item !== id);
+    }
+    this.categoryWithQuestions.forEach((cat: any) => {
+      if (cat.id === q.id) {
+        const question = cat.questions.find((question: any) => question.id === id);
+        if (question) {
+          if (this.assignQuestionsIds.includes(id)) {
+            cat.selectedCount += 1;
+          } else {
+            cat.selectedCount -= 1;
+          }
+        }
+      }
+    });
+
+    console.log(this.assignQuestionsIds);
+}
+
+  public _completeExamCreation(){
+    this.loadingIndicator = true;
+    this.examService.completeExamCreation(this.assignQuestionsIds,this.examId).subscribe({
+      next:()=>{
+        this.toastr.success('Exam created successfully','success');
+      },
+      complete:()=>{
+        this.loadingIndicator = false;
+        var modalElement: HTMLElement = document.getElementById('close-cat')as HTMLElement;
+        if(modalElement !== null){
+          modalElement.click();
+        }
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+
+    })
   }
 
 }

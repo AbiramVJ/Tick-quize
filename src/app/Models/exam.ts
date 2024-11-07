@@ -27,12 +27,30 @@ export class AssignCategory {
   id: string;
   name: string;
   questionCount: number;
+  questions:Questions[];
+  selectedCount:number;
 
   constructor(obj: any) {
   //  this.id = obj.id ?? '';
     this.id = obj.categoryId ?? '';
     this.name = obj.categoryName ?? '';
     this.questionCount = obj.questionCount ?? 0;
+    this.questions = obj.questions.length > 0 ? obj.questions.map((q:any) => new Questions(q) ) : [];
+    this.selectedCount = 0;
+  }
+}
+
+
+export class Questions {
+  id: string;
+  name: string;
+  isAlreadyAdded:boolean;
+
+  constructor(obj:any){
+    console.log(obj);
+    this.id = obj.id ?? '';
+    this.name = obj.name ?? '';
+    this.isAlreadyAdded = obj.isAlreadyAdded ?? false;
   }
 }
 

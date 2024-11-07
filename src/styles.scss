@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 .tick-button{
-  background: linear-gradient(to bottom, #3ec7d1, #d7d7d7) !important;
+  background: #477c80 !important;
+  border: solid 3px #34bac4 !important;
+  border-radius: 10px !important;
+  color: white !important;
+  font-weight: 600 !important;
 }
 
 .tick-color{
@@ -48,4 +52,21 @@ body {
 
 .text-sm{
   font-size: 14px;
+}
+
+.form-check-input {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  border: solid 1px #3ec7d1 !important;
+}
+
+.form-control {
+
+  //border: solid 1px #83ccd2 !important;
+  height: 42px !important;
+}
+
+.div-disabled{
+  pointer-events: none !important;
+  opacity: 50% !important;
 }

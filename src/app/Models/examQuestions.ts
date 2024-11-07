@@ -25,3 +25,32 @@ export class Options {
 
   }
 }
+
+
+export class QuestionList {
+  id: string;
+  name: string;
+  type: number;
+  answerOptions: Options[];
+
+  constructor(obj: any) {
+    this.id = obj.id ?? null;
+    this.name = obj.name ?? '';
+    this.type = obj.type ?? 1;
+    this.answerOptions = obj.answerOptions.map((option: any) => new Options(option)) ?? [];
+  }
+}
+
+export class OptionsList {
+  id: string;
+  name: string;
+  isCorrect: boolean;
+
+
+  constructor(obj: any) {
+    this.id = obj.id ?? null;
+    this.name = obj.name ?? '';
+    this.isCorrect = obj.isCorrect ?? false;
+
+  }
+}

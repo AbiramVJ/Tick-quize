@@ -1,0 +1,10 @@
+::ng-deep .ng-select .ng-select-container {
+  cursor: default;
+  display: flex;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 42px !important;
+  border-radius: 5px !important;
+}

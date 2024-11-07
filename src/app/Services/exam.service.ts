@@ -107,7 +107,9 @@ export class ExamService {
 
   public deleteExam(id:string){
     return this.http.delete<any>(`${this.baseUrl}Exam/${id}`);
-
   }
 
+  public completeExamCreation(body:any, examId:string){
+    return this.http.post<any>(`${this.baseUrl}Exam/${examId}/add-questions`, body);
+  }
 }
