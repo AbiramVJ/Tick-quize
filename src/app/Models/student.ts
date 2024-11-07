@@ -6,7 +6,7 @@ export class Batch {
   isCurrent: boolean;
 
   constructor(obj: any) {
-    this.id = obj.id ?? '';
+    this.id = obj.id ?? '' ;
     this.name = obj.name ?? '';
     this.isCurrent = obj.isCurrent ?? false;
   }

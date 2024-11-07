@@ -6,11 +6,12 @@ import { CommonModule, JsonPipe } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../../Services/category.service';
 import { Category } from '../../../../Models/category';
+import { AppLoadingComponent } from "../../../Common/under-constraction/app-loading/app-loading.component";
 
 @Component({
   selector: 'app-add-exam',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, JsonPipe,],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, JsonPipe, AppLoadingComponent],
   templateUrl: './add-exam.component.html',
   styleUrl: './add-exam.component.scss'
 })
@@ -100,7 +101,7 @@ export class AddExamComponent implements OnInit {
   public changeStep(step:number){
     if(step === 1 ){
      this.step = 1;
-     this.completePercentage = 30;
+     this.completePercentage = 0;
     }else if(step === 2){
      if(this.isEditFlow){
       if(this.examForm.touched){
@@ -141,6 +142,7 @@ export class AddExamComponent implements OnInit {
   }
 
   public setEditFormsValue(exam:any){
+    this.completePercentage = 0;
     this._getAllCategories()
     this.examId = exam.id;
     this.isEditFlow = true;
@@ -227,7 +229,7 @@ export class AddExamComponent implements OnInit {
       })
       this.examService.addQuestionToCategory(body, this.examId).subscribe({
         next:(res) => {
-          this.toastr.success('success', 'Categories assigned successfully');
+         // this.toastr.success('success', 'Categories assigned successfully');
         },
         complete:() => {
           this.loadingIndicator = false;
@@ -273,7 +275,7 @@ export class AddExamComponent implements OnInit {
     this.loadingIndicator = true;
     this.examService.deleteExam(this.deleteId).subscribe({
       next:(res:any) => {
-        this.toastr.success('success', 'Categories deleted successfully');
+       this.toastr.success('success', 'Categories deleted successfully');
       },
       complete:()=>{
         this.loadingIndicator = false;
@@ -362,6 +364,7 @@ export class AddExamComponent implements OnInit {
         if(modalElement !== null){
           modalElement.click();
         }
+        this.closeModelProperties();
       },
       error:(error:any) => {
         this.loadingIndicator = false;

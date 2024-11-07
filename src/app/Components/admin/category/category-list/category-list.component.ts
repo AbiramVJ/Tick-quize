@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CategoryService } from '../../../../Services/category.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AppLoadingComponent } from "../../../Common/under-constraction/app-loading/app-loading.component";
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,NgxPaginationModule],
+  imports: [ReactiveFormsModule, CommonModule, NgxPaginationModule, AppLoadingComponent],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.scss'
 })
@@ -123,7 +124,6 @@ export class CategoryListComponent implements OnInit {
           var modalElement: HTMLElement = document.getElementById('close-cat')as HTMLElement;
           if(modalElement !== null){
             modalElement.click();
-
           }
         },
         error:(error:any) => {

@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
 
   </div>
   <div class="row mt-5">
@@ -73,6 +74,7 @@
           <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="categoryForm.reset(); isSubmitted = false">Cancel</button>
           <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateCategory() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
         </div>
+        <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
       </div>
     </div>
   </div>

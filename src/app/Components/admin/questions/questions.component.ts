@@ -9,11 +9,12 @@ import { ToastrService } from 'ngx-toastr';
 import { QuestionList } from '../../../Models/examQuestions';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BehaviorSubject, debounceTime } from 'rxjs';
+import { AppLoadingComponent } from "../../Common/under-constraction/app-loading/app-loading.component";
 
 @Component({
   selector: 'app-questions',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule,FormsModule,NgSelectComponent,NgLabelTemplateDirective,NgxPaginationModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FormsModule, NgSelectComponent, NgLabelTemplateDirective, NgxPaginationModule, AppLoadingComponent],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
 })

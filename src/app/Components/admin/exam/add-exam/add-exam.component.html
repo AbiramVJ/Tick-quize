@@ -18,7 +18,11 @@
       </div>
       <div class="col-2 d-flex align-items-center">{{e.name}}</div>
       <div class="col-2 d-flex align-items-center">{{e.date}}</div>
-      <div class="col-2 d-flex align-items-center">{{e.duration}} {{e.isActive}}</div>
+      <div class="col-2 d-flex align-items-center">
+        <div class="me-3">{{e.duration}} mins</div>
+        <div class="status p-2"> {{e.isActive ? 'Active' : 'In-active'}}</div>
+
+      </div>
       <div class="col-3 d-flex align-items-center justify-content-end">
         <div class="d-flex">
           <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color" data-bs-toggle="modal" data-bs-target="#add-exam" (click)="setEditFormsValue(e)" ></i></div>
@@ -29,6 +33,7 @@
   </div>
 </div>
 
+<app-app-loading *ngIf="loadingIndicator"></app-app-loading>
 
 
 <!-- Modal -->
@@ -126,7 +131,7 @@
               <div class="accordion-item mt-3" *ngFor="let q of categoryWithQuestions">
                 <h2 class="accordion-header" id="headingOne" >
                   <div class="row m-0" >
-                    <div class="col-12 border" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <div class="col-12 border" data-bs-toggle="collapse" [attr.data-bs-target]="'#headingOne' + q.id"  aria-expanded="true" aria-controls="collapseOne">
                       <div class="d-flex justify-content-between">
                         <div class="text-sm p-3">{{q.name}}</div>
                         <div class="p-3 text-sm">{{q.questionCount}} of {{q.selectedCount}}</div>
@@ -134,7 +139,7 @@
                     </div>
                   </div>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div id="{{'headingOne' + q.id}}" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                   <div class="p-3">
                     <div class="row">
                       <div class="col-12 mt-3" *ngFor="let a of q.questions">
@@ -170,6 +175,8 @@
 
           <button type="button" class="btn tick-button px-5" *ngIf="step === 3" (click)="changeStep(4)" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span>{{isEditFlow ? 'Update' : 'Create' }} </button>
         </div>
+
+        <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
       </div>
     </div>
   </div>
@@ -197,3 +204,5 @@
     </div>
   </div>
 </div>
+
+
