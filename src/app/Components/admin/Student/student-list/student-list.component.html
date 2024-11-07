@@ -5,13 +5,13 @@
         Students
       </div>
       <div class="">
-        <button class="btn tick-button fw-bold text-white">Add Student</button>
+        <button class="btn tick-button fw-bold text-white" data-bs-toggle="modal" data-bs-target="#add-student">Add Student</button>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-4">
         <div class="">Batch</div>
-        <ng-select [items]="batch" bindLabel="name" bindValue="id" [(ngModel)]="selectedBatch" (ngModelChange)="filterByBatch($event)"[clearable]="false"> </ng-select>
+        <ng-select [items]="batches" bindLabel="name" bindValue="id" [(ngModel)]="selectedBatch" (ngModelChange)="filterByBatch($event)"[clearable]="false"> </ng-select>
       </div>
       <div class="col-4">
         <div>Search</div>
@@ -47,3 +47,106 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-student" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">{{isUpdate ? 'Edit' : 'Add'}} user</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-student" (click)="studentForm.reset();isSubmitted = false"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="studentForm">
+          <div class="row">
+            <!-- Batch ID -->
+            <div class="col-12">
+              <label for="batch-id" class="form-label">Batch ID</label>
+              <!-- <input type="text" class="form-control" id="batch-id" formControlName="batchId" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}"> -->
+              <ng-select [items]="batches" bindLabel="name" bindValue="id" formControlName="batchId"  [clearable]="false" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}" > </ng-select>
+            </div>
+
+            <!-- Admission No -->
+            <div class="col-12">
+              <label for="admission-no" class="form-label">Admission No</label>
+              <input type="text" class="form-control" id="admission-no" formControlName="admissionNo" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('admissionNo')?.errors}">
+            </div>
+
+            <!-- First Name -->
+            <div class="col-12">
+              <label for="f-name" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="f-name" formControlName="firstName" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('firstName')?.errors}">
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-12">
+              <label for="l-name" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="l-name" formControlName="lastName" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('lastName')?.errors}">
+            </div>
+
+            <!-- Password -->
+            <div class="col-12">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('password')?.errors}">
+            </div>
+
+            <!-- Email -->
+            <div class="col-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="eMail" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('eMail')?.errors}">
+            </div>
+
+            <!-- Phone Number -->
+            <div class="col-12">
+              <label for="phone-no" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="phone-no" formControlName="phoneNo" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('phoneNo')?.errors}">
+            </div>
+
+            <!-- Joined Date -->
+            <div class="col-12">
+              <label for="joined-date" class="form-label">Joined Date</label>
+              <input type="date" class="form-control" id="joined-date" formControlName="joinedDate" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('joinedDate')?.errors}">
+            </div>
+
+            <!-- Image URL -->
+            <div class="col-12">
+              <label for="image-url" class="form-label">Image URL</label>
+              <input type="text" class="form-control" id="image-url" formControlName="imagUrl" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('imagUrl')?.errors}">
+            </div>
+
+            <!-- Gender -->
+            <div class="col-12">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-control" id="gender" formControlName="gender" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('gender')?.errors}">
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+                <option value="2">Other</option>
+              </select>
+            </div>
+
+            <!-- Civil Status -->
+            <div class="col-12">
+              <label for="civil-status" class="form-label">Civil Status</label>
+              <select class="form-control" id="civil-status" formControlName="civilStatus" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('civilStatus')?.errors}">
+                <option value="0">Single</option>
+                <option value="1">Married</option>
+                <option value="2">Divorced</option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+        <div class="d-flex text-center mt-3">
+          <div class="col-6 ms-auto" ></div>
+          <button type="button" class="btn tick-button w-50 me-3" [disabled]="loadingIndicator" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+
+          <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateStudent() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
+        </div>
+        <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
+      </div>
+    </div>
+  </div>
+</div>
+
+
