@@ -18,7 +18,9 @@ import { BehaviorSubject, debounceTime } from 'rxjs';
 })
 export class StudentListComponent implements OnInit {
   public searchValue = new BehaviorSubject<any>(null);
-  public items:any = [1,2,3,4,5,6];
+  public gender:any = [{id:1, name:'Male'},{id:2, name:'Female'},{id:3, name:'Other'}];
+  public civilStatus:any = [{id:1, name:'Single'},{id:2, name:'Married'},{id:3, name:'Divorced'}];
+
   public batches:Batch [] = [];
   public students:Student[] = [];
   public selectedBatchId:any;
@@ -63,7 +65,7 @@ export class StudentListComponent implements OnInit {
       admissionNo: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      password: ['', Validators.required],
+      password: [''],
       eMail: ['', [Validators.required, Validators.email]],
       phoneNo: ['', Validators.required],
       joinedDate: ['', Validators.required],
@@ -71,11 +73,11 @@ export class StudentListComponent implements OnInit {
       gender: [0, Validators.required],
       civilStatus: [0, Validators.required],
 
-      line1: [''],
+      line1: ['', Validators.required],
       line2: [''],
-      city: [''],
-      province: [''],
-      country: ['SriLanka'],
+      city: ['', Validators.required],
+      province: ['', Validators.required],
+      country: ['SriLanka', Validators.required],
     });
   }
 
@@ -85,27 +87,49 @@ export class StudentListComponent implements OnInit {
 
   public submit(){
     this.isSubmitted = true;
+    console.log(this.studentForm.valid);
+    console.log(this.studentForm.value);
+    this.isUpdate ? this.studentForm.get('password')?.clearValidators() : this.studentForm.get('password')?.setValidators([Validators.required]) ;
+
     if(this.studentForm.valid){
       this.loadingIndicator = true;
       let body = this.studentForm.value;
-      body['gender'] = Number(body['gender'] + 1);
-      body['civilStatus'] = Number(body['civilStatus'] + 1);
-      //this.isUpdate ?
-      this.studentService.addStudent(body).subscribe({
-        next:(res:any) => {
-          this.createAddress(res.Result.id)
-        },
-        complete:() => {
-          this.loadingIndicator = false;
-          this.isSubmitted = false;
 
-        },
-        error:(error:any) => {
-          this.loadingIndicator = false;
-          this.isSubmitted = false;
-          this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
-        }
-      })
+      if(this.isUpdate){
+        body['id'] = this.editStuId
+        this.studentService.updateStudent(body).subscribe({
+          next:(res:any) => {
+            this.createAddress(res.Result.id)
+          },
+          complete:() => {
+            this.loadingIndicator = false;
+            this.isSubmitted = false;
+
+          },
+          error:(error:any) => {
+            this.loadingIndicator = false;
+            this.isSubmitted = false;
+            this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+          }
+        })
+      }else{
+        this.studentService.addStudent(body).subscribe({
+          next:(res:any) => {
+            this.createAddress(res.Result.id)
+          },
+          complete:() => {
+            this.loadingIndicator = false;
+            this.isSubmitted = false;
+
+          },
+          error:(error:any) => {
+            this.loadingIndicator = false;
+            this.isSubmitted = false;
+            this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+          }
+        })
+      }
+
     }
   }
 
@@ -170,7 +194,7 @@ export class StudentListComponent implements OnInit {
             modalElement.click();
           }
           this._getAllStudent();
-
+          this.isUpdate = false;
       },
       error:(error:any) => {
         this.loadingIndicator = false;
@@ -186,8 +210,8 @@ export class StudentListComponent implements OnInit {
     let setBody = {
       batchId:student.batchId ,
       admissionNo:student.admissionNo ,
-      firstName:student.name ,
-      lastName:student.name ,
+      firstName:student.firstName ,
+      lastName:student.lastName ,
       password:student.password ,
       eMail:student.eMail ,
       phoneNo:student.phoneNo ,

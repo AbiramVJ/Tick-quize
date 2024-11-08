@@ -5,7 +5,7 @@
         Students
       </div>
       <div class="">
-        <button class="btn tick-button fw-bold text-white" data-bs-toggle="modal" data-bs-target="#add-student">Add Student</button>
+        <button class="btn tick-button fw-bold text-white" data-bs-toggle="modal" data-bs-target="#add-student" (click)="isUpdate = false;">Add Student</button>
       </div>
     </div>
     <div class="row mt-3">
@@ -26,10 +26,12 @@
             <img src="https://st2.depositphotos.com/3369547/11114/v/450/depositphotos_111147738-stock-illustration-e-learning-design-education-icon.jpg" class="image" alt="" width="300px" height="200px">
           </div>
           <div class="d-flex justify-content-between">
-            <div class="fw-bold fs-5 mt-3 ps-1">{{student.name}}</div>
+            <div class="fw-bold fs-5 mt-3 ps-1">{{student.firstName + ' ' + student.lastName}}</div>
+
             <div class="fw-bold mt-3 fs-5 ps-1 text-danger">{{student.admissionNo}}</div>
           </div>
-          <div class="mt-3">{{student.fullAddress}}</div>
+          <div class="mt-3">{{student.gender === 1 ? 'Male' : student.gender === 2 ? 'Female' : 'other' }}</div>
+          <div class="mt-1">{{student.fullAddress}}</div>
           <div>Join Date: {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
           <div>Batch: {{'2024'}}</div>
           <div class="d-flex justify-content-end">
@@ -76,98 +78,90 @@
             <!-- Batch ID -->
              <div class="fw-bold fs-5">Personal details</div>
             <div class="col-12 mt-3">
-              <label for="batch-id" class="form-label">Batch ID</label>
+              <label for="batch-id" class="form-label fw-bold">Batch ID</label>
               <!-- <input type="text" class="form-control" id="batch-id" formControlName="batchId" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}"> -->
               <ng-select [items]="batches" bindLabel="name" bindValue="id" formControlName="batchId"  [clearable]="false" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}" > </ng-select>
             </div>
 
             <!-- Admission No -->
-            <div class="col-12">
-              <label for="admission-no" class="form-label">Admission No</label>
+            <div class="col-12 mt-2">
+              <label for="admission-no" class="form-label fw-bold">Admission No</label>
               <input type="text" class="form-control" id="admission-no" formControlName="admissionNo" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('admissionNo')?.errors}">
             </div>
 
             <!-- First Name -->
-            <div class="col-12">
-              <label for="f-name" class="form-label">First Name</label>
+            <div class="col-12 mt-2">
+              <label for="f-name" class="form-label fw-bold">First Name</label>
               <input type="text" class="form-control" id="f-name" formControlName="firstName" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('firstName')?.errors}">
             </div>
 
             <!-- Last Name -->
-            <div class="col-12">
-              <label for="l-name" class="form-label">Last Name</label>
+            <div class="col-12 mt-2">
+              <label for="l-name" class="form-label fw-bold">Last Name</label>
               <input type="text" class="form-control" id="l-name" formControlName="lastName" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('lastName')?.errors}">
             </div>
 
             <!-- Password -->
-            <div class="col-12">
-              <label for="password" class="form-label">Password</label>
+            <div class="col-12 mt-2" *ngIf="!isUpdate">
+              <label for="password" class="form-label fw-bold">Password</label>
               <input type="password" class="form-control" id="password" formControlName="password" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('password')?.errors}">
             </div>
 
             <!-- Email -->
-            <div class="col-12">
-              <label for="email" class="form-label">Email</label>
+            <div class="col-12 mt-2">
+              <label for="email" class="form-label fw-bold">Email</label>
               <input type="email" class="form-control" id="email" formControlName="eMail" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('eMail')?.errors}">
             </div>
 
             <!-- Phone Number -->
-            <div class="col-12">
-              <label for="phone-no" class="form-label">Phone Number</label>
+            <div class="col-12 mt-2">
+              <label for="phone-no" class="form-label fw-bold">Phone Number</label>
               <input type="text" class="form-control" id="phone-no" formControlName="phoneNo" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('phoneNo')?.errors}">
             </div>
 
             <!-- Joined Date -->
-            <div class="col-12">
-              <label for="joined-date" class="form-label">Joined Date</label>
+            <div class="col-12 mt-2">
+              <label for="joined-date" class="form-label fw-bold">Joined Date</label>
               <input type="date" class="form-control" id="joined-date" formControlName="joinedDate" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('joinedDate')?.errors}">
             </div>
 
             <!-- Image URL -->
-            <div class="col-12">
-              <label for="image-url" class="form-label">Image URL</label>
+            <div class="col-12 mt-2">
+              <label for="image-url" class="form-label fw-bold">Image URL</label>
               <input type="text" class="form-control" id="image-url" formControlName="imagUrl" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('imagUrl')?.errors}">
             </div>
 
             <!-- Gender -->
-            <div class="col-12">
-              <label for="gender" class="form-label">Gender</label>
-              <select class="form-control" id="gender" formControlName="gender" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('gender')?.errors}">
-                <option value="0">Male</option>
-                <option value="1">Female</option>
-                <option value="2">Other</option>
-              </select>
+            <div class="col-12 mt-2">
+              <label for="gender" class="form-label fw-bold">Gender</label>
+              <ng-select [items]="gender" bindLabel="name" bindValue="id" formControlName="gender"  [clearable]="false" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('gender')?.errors}" > </ng-select>
             </div>
 
             <!-- Civil Status -->
-            <div class="col-12">
-              <label for="civil-status" class="form-label">Civil Status</label>
-              <select class="form-control" id="civil-status" formControlName="civilStatus" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('civilStatus')?.errors}">
-                <option value="0">Single</option>
-                <option value="1">Married</option>
-                <option value="2">Divorced</option>
-              </select>
+            <div class="col-12 mt-2">
+              <label for="civil-status" class="form-label fw-bold">Civil Status</label>
+              <ng-select [items]="civilStatus" bindLabel="name" bindValue="id" formControlName="civilStatus"  [clearable]="false" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('civilStatus')?.errors}" > </ng-select>
             </div>
             <div class="fw-bold fs-5 mt-3">Address</div>
             <div class="col-12 mt-3">
-              <label for="line1" class="form-label">Line 1</label>
+              <label for="line1" class="form-label fw-bold">Line 1</label>
               <input type="text" class="form-control" id="line1" formControlName="line1" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('line1')?.errors}">
             </div>
-            <div class="col-12">
-              <label for="line2" class="form-label">Line 2</label>
+            <div class="col-12 mt-2">
+              <label for="line2" class="form-label fw-bold">Line 2</label>
               <input type="text" class="form-control" id="line2" formControlName="line2" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('line2')?.errors}">
 
             </div>
-            <div class="col-12">
-              <label for="city" class="form-label">City</label>
+            <div class="col-12 mt-2">
+              <label for="city" class="form-label fw-bold">City</label>
               <input type="text" class="form-control" id="city" formControlName="city" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('city')?.errors}">
             </div>
-            <div class="col-12">
-              <label for="province" class="form-label">Province</label>
+            <div class="col-12 mt-2">
+              <label for="province" class="form-label fw-bold">Province</label>
               <input type="text" class="form-control" id="province" formControlName="province" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('province')?.errors}">
             </div>
-            <div class="col-12">
-              <label for="country" class="form-label">Country</label>
+            <div class="col-12 mt-2">
+              <label for="country" class="form-label fw-bold">Country</label>
               <input type="text" class="form-control" id="country" formControlName="country" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('country')?.errors}">
             </div>
 
@@ -178,7 +172,7 @@
           <div class="col-6 ms-auto" ></div>
           <button type="button" class="btn tick-button w-50 me-3" [disabled]="loadingIndicator" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
 
-          <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateStudent() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
+          <button type="button" class="btn tick-button w-50" (click)="submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
         </div>
         <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
       </div>

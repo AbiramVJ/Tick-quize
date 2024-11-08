@@ -28,11 +28,11 @@ export class StudentService {
   }
 
   public addStudent(body:any){
-      // delete body['line1'];
-      // delete body['line2'];
-      // delete body['province'];
-      // delete body['country'];
     return this.http.post<any>(`${this.baseUrl}Auth/student`, body);
+  }
+
+  public updateStudent(body:any){
+    return this.http.put<any>(`${this.baseUrl}Students/${body.id}`, body);
   }
 
   public getAllStudent(params:any){
