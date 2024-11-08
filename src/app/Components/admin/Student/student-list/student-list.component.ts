@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AppLoadingComponent } from "../../../Common/under-constraction/app-loading/app-loading.component";
 import { ToastrService } from 'ngx-toastr';
 import { Batch, Student } from '../../../../Models/student';
+import { BehaviorSubject, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-student-list',
@@ -16,7 +17,7 @@ import { Batch, Student } from '../../../../Models/student';
   styleUrl: './student-list.component.scss'
 })
 export class StudentListComponent implements OnInit {
-
+  public searchValue = new BehaviorSubject<any>(null);
   public items:any = [1,2,3,4,5,6];
   public batches:Batch [] = [];
   public students:Student[] = [];
@@ -32,8 +33,8 @@ export class StudentListComponent implements OnInit {
   public itemsPerPage:number = 5;
   public currentPage:number = 1;
 
-  public selectedBatId:string = '';
   public searchText:string = '';
+  public editStuId:string = '';
 
 
  public params = {
@@ -49,7 +50,11 @@ export class StudentListComponent implements OnInit {
 
   ngOnInit() {
     this._getAllBatches();
-    this._getAllStudent();
+    this.searchValue.pipe(debounceTime(1000)).subscribe(searchText => {
+      if (searchText != null) {
+        this.getSearchActivities(searchText);
+      }
+    });
   }
 
   public studentFormInit(){
@@ -66,11 +71,11 @@ export class StudentListComponent implements OnInit {
       gender: [0, Validators.required],
       civilStatus: [0, Validators.required],
 
-      line1: ['', Validators.required],
+      line1: [''],
       line2: [''],
-      city: ['', Validators.required],
-      province: ['', Validators.required],
-      country: ['SriLanka', Validators.required],
+      city: [''],
+      province: [''],
+      country: ['SriLanka'],
     });
   }
 
@@ -85,6 +90,7 @@ export class StudentListComponent implements OnInit {
       let body = this.studentForm.value;
       body['gender'] = Number(body['gender'] + 1);
       body['civilStatus'] = Number(body['civilStatus'] + 1);
+      //this.isUpdate ?
       this.studentService.addStudent(body).subscribe({
         next:(res:any) => {
           this.createAddress(res.Result.id)
@@ -113,6 +119,7 @@ export class StudentListComponent implements OnInit {
       },
       complete:() => {
         this.loadingIndicator = false;
+        this._getAllStudent();
       },
       error:(error:any) => {
         this.loadingIndicator = false;
@@ -173,14 +180,48 @@ export class StudentListComponent implements OnInit {
     })
   }
 
-  public setEditStudentData(){
+  public setEditStudentData(student:Student){
+    this.isUpdate = true;
+    this.editStuId = student.id
+    let setBody = {
+      batchId:student.batchId ,
+      admissionNo:student.admissionNo ,
+      firstName:student.name ,
+      lastName:student.name ,
+      password:student.password ,
+      eMail:student.eMail ,
+      phoneNo:student.phoneNo ,
+      joinedDate:student.joinedDate ,
+      imagUrl:student.imagUrl,
+      gender:student.gender ,
+      civilStatus:student.civilStatus ,
 
+      line1:student.address !== null ? student.address?.line1 : '',
+      line2:student.address !== null ? student.address?.line2 : '',
+      city: student.address !== null ?student.address?.city : '',
+      province:student.address !== null ? student.address?.province : '',
+      country: student.address !== null ? student.address?.country : '',
+    }
+    this.studentForm.setValue(setBody);
   }
 
 
   public filterQuestion(){
-    this.params.batchId = this.selectedBatId;
+    this.params.batchId = this.selectedBatchId;
     this._getAllStudent();
+  }
+
+  public searchQuestions(searchText:string){
+    this.searchValue.next(searchText);
+  }
+
+  public getSearchActivities(searchText:string){
+    this.params.pageNumber = 1;
+    this.currentPage = 1;
+    this.params.searchText = searchText;
+    this.params.batchId = this.selectedBatchId;
+    this._getAllStudent();
+
   }
 
   //PAGINATION

@@ -15,7 +15,7 @@
       </div>
       <div class="col-4">
         <div>Search</div>
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" class="form-control" placeholder="Search"  [(ngModel)]="searchText" (keyup)="searchQuestions(searchText)">
       </div>
     </div>
     <div class="row mt-3">
@@ -33,7 +33,7 @@
           <div>Join Date: {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
           <div>Batch: {{'2024'}}</div>
           <div class="d-flex justify-content-end">
-            <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color"  data-bs-toggle="modal" data-bs-target="#add-student" ></i></div>
+            <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color"  data-bs-toggle="modal" data-bs-target="#add-student" (click)="setEditStudentData(student)" ></i></div>
             <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-user"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
           </div>
         </div>
