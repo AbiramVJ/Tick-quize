@@ -4,12 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Question, QuestionList } from '../Models/examQuestions';
 import { Category } from '../Models/category';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  private baseUrl:any = 'https://localhost:7000/api/';
+  private baseUrl = (environment as any).baseUrl;
+
 
 
   constructor(private http: HttpClient) { }

@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs';
 import { Question } from '../Models/examQuestions';
 import { AssignCategory, Exam } from '../Models/exam';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamService {
-  private baseUrl:any = 'https://localhost:7000/api/';
+  private baseUrl = (environment as any).baseUrl;
+
 
   constructor(private http: HttpClient) { }
 
