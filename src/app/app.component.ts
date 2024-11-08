@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './Services/auth.service';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from "./Components/sidebar/sidebar.component";
@@ -8,7 +8,7 @@ import { TopbarComponent } from "./Components/topbar/topbar.component";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, SidebarComponent, TopbarComponent],
+  imports: [RouterOutlet, CommonModule, SidebarComponent, TopbarComponent,RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -35,5 +35,13 @@ export class AppComponent implements OnInit {
       user !== null ? this.isLogIn = true : false;
     })
   }
+
+
+  public logout(){
+    // this.authService.removeItems();
+   //  this.authService.setUserDetails(null);
+     this.authService.logout();
+
+   }
 
 }

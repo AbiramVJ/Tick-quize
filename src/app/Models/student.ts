@@ -15,8 +15,7 @@ export class Batch {
 export class Student {
   batchId: string;
   admissionNo: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   password: string;
   eMail: string;
   phoneNo: string;
@@ -24,18 +23,22 @@ export class Student {
   imagUrl: string;
   gender: number;
   civilStatus: number;
+  address:string;
+  fullAddress:string;
 
   constructor(obj: any) {
+   // console.log(obj);
     this.batchId = obj.batchId ?? '';
     this.admissionNo = obj.admissionNo ?? '';
-    this.firstName = obj.firstName ?? '';
-    this.lastName = obj.lastName ?? '';
+    this.name = obj.name ?? '';
     this.password = obj.password ?? '';
     this.eMail = obj.eMail ?? '';
     this.phoneNo = obj.phoneNo ?? '';
-    this.joinedDate = obj.joinedDate ?? ''; // You could format the date here if needed
+    this.joinedDate = obj.joinedDate ?? '';
     this.imagUrl = obj.imagUrl ?? 'none';
     this.gender = obj.gender ?? 0;
     this.civilStatus = obj.civilStatus ?? 0;
+    this.address = obj.address ?? '';
+    this.fullAddress = obj.address !== null ? obj.address.line1 + obj.address.line2 + obj.address.city : 'No Address';
   }
 }

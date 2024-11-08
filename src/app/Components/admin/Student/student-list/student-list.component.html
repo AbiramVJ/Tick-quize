@@ -11,7 +11,7 @@
     <div class="row mt-3">
       <div class="col-4">
         <div class="">Batch</div>
-        <ng-select [items]="batches" bindLabel="name" bindValue="id" [(ngModel)]="selectedBatch" (ngModelChange)="filterByBatch($event)"[clearable]="false"> </ng-select>
+        <ng-select [items]="batches" bindLabel="name" bindValue="id" [(ngModel)]="selectedBatchId" (ngModelChange)="filterQuestion()"[clearable]="false"> </ng-select>
       </div>
       <div class="col-4">
         <div>Search</div>
@@ -20,33 +20,46 @@
     </div>
     <div class="row mt-3">
 
-      <div class="col-4 mt-3" *ngFor="let item of items">
+      <div class="col-4 mt-3" *ngFor="let student of students | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
         <div class="tick-shadow rounded p-2" >
-          <div class="text-center">
-            <img src="https://plus.unsplash.com/premium_photo-1682089892133-556bde898f2c?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3R1ZGVudCUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" alt="" width="300px">
+          <div class="text-center border">
+            <img src="https://st2.depositphotos.com/3369547/11114/v/450/depositphotos_111147738-stock-illustration-e-learning-design-education-icon.jpg" class="image" alt="" width="300px" height="200px">
           </div>
           <div class="d-flex justify-content-between">
-            <div class="fw-bold fs-5 mt-3 ps-1">Vijayakumar Abiram</div>
-            <div class="fw-bold mt-3 fs-5 ps-1 text-danger">UCT101</div>
+            <div class="fw-bold fs-5 mt-3 ps-1">{{student.name}}</div>
+            <div class="fw-bold mt-3 fs-5 ps-1 text-danger">{{student.admissionNo}}</div>
           </div>
-          <div class="mt-3">Address: pointpedro, jaffna</div>
-          <div>Join Date: 2024.10.25</div>
-          <div>Batch: 2024</div>
-          <button class="btn tick-button mt-3">View more</button>
+          <div class="mt-3">{{student.fullAddress}}</div>
+          <div>Join Date: {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
+          <div>Batch: {{'2024'}}</div>
+          <div class="d-flex justify-content-end">
+            <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color"  data-bs-toggle="modal" data-bs-target="#add-student" ></i></div>
+            <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-user"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
+          </div>
         </div>
       </div>
 
     </div>
-    <div class="row mt-5">
-      <div class="col-12 float-right d-flex justify-content-end">
+
+<div class="row mt-5">
+  <div class="col-11 mx-auto">
+    <div class="row">
+      <div class="col-1 p-0">
+        <label>Page size</label>
+        <input type="number" class="form-control" [(ngModel)]="itemsPerPage"  min="1" (ngModelChange)="changePerPageValue()">
+      </div>
+      <div class="col-11 float-right d-flex justify-content-end">
         <pagination-controls
-        [maxSize]="5"
         (pageChange)="onPageChange($event)"
         [previousLabel]="'Prev'" ></pagination-controls>
       </div>
     </div>
   </div>
+
 </div>
+  </div>
+</div>
+<app-app-loading *ngIf="loadingIndicator"></app-app-loading>
 
 
 <!-- Modal -->
@@ -61,7 +74,8 @@
         <form [formGroup]="studentForm">
           <div class="row">
             <!-- Batch ID -->
-            <div class="col-12">
+             <div class="fw-bold fs-5">Personal details</div>
+            <div class="col-12 mt-3">
               <label for="batch-id" class="form-label">Batch ID</label>
               <!-- <input type="text" class="form-control" id="batch-id" formControlName="batchId" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}"> -->
               <ng-select [items]="batches" bindLabel="name" bindValue="id" formControlName="batchId"  [clearable]="false" [ngClass]="{'errorBorder':isSubmitted && studentForm.get('batchId')?.errors}" > </ng-select>
@@ -134,6 +148,29 @@
                 <option value="2">Divorced</option>
               </select>
             </div>
+            <div class="fw-bold fs-5 mt-3">Address</div>
+            <div class="col-12 mt-3">
+              <label for="line1" class="form-label">Line 1</label>
+              <input type="text" class="form-control" id="line1" formControlName="line1" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('line1')?.errors}">
+            </div>
+            <div class="col-12">
+              <label for="line2" class="form-label">Line 2</label>
+              <input type="text" class="form-control" id="line2" formControlName="line2" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('line2')?.errors}">
+
+            </div>
+            <div class="col-12">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" formControlName="city" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('city')?.errors}">
+            </div>
+            <div class="col-12">
+              <label for="province" class="form-label">Province</label>
+              <input type="text" class="form-control" id="province" formControlName="province" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('province')?.errors}">
+            </div>
+            <div class="col-12">
+              <label for="country" class="form-label">Country</label>
+              <input type="text" class="form-control" id="country" formControlName="country" [ngClass]="{'errorBorder': isSubmitted && studentForm.get('country')?.errors}">
+            </div>
+
           </div>
         </form>
 

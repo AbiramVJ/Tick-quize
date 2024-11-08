@@ -152,7 +152,7 @@ export class ExamsComponent {
           this.loadingIndicator = false;
         },
         error :(err:any) => {
-          console.log(err);
+         // console.log(err);
           this.toastr.error(err.error.Error.Title, err.error.Error.Detail);
         }
       })

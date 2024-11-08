@@ -20,7 +20,7 @@ export class StudentListComponent implements OnInit {
   public items:any = [1,2,3,4,5,6];
   public batches:Batch [] = [];
   public students:Student[] = [];
-  public selectedBatch:any;
+  public selectedBatchId:any;
 
   public studentForm!:FormGroup;
 
@@ -33,6 +33,15 @@ export class StudentListComponent implements OnInit {
   public currentPage:number = 1;
 
   public selectedBatId:string = '';
+  public searchText:string = '';
+
+
+ public params = {
+  itemsPerPage : this.itemsPerPage,
+  pageNumber:this.currentPage,
+  searchText:this.searchText,
+  batchId:'',
+}
 
   constructor(private fb:FormBuilder, private studentService:StudentService,  private toastr: ToastrService,){
     this.studentFormInit();
@@ -55,18 +64,14 @@ export class StudentListComponent implements OnInit {
       joinedDate: ['', Validators.required],
       imagUrl: [''],
       gender: [0, Validators.required],
-      civilStatus: [0, Validators.required]
+      civilStatus: [0, Validators.required],
+
+      line1: ['', Validators.required],
+      line2: [''],
+      city: ['', Validators.required],
+      province: ['', Validators.required],
+      country: ['SriLanka', Validators.required],
     });
-  }
-
-
-
-
-  filterByBatch(event:any){
-
-  }
-  onPageChange(event:any){
-
   }
 
   public _updateStudent(){
@@ -76,21 +81,18 @@ export class StudentListComponent implements OnInit {
   public submit(){
     this.isSubmitted = true;
     if(this.studentForm.valid){
-
+      this.loadingIndicator = true;
       let body = this.studentForm.value;
-      body['gender'] = Number(body['gender']);
-      body['civilStatus'] = Number(body['civilStatus']);
+      body['gender'] = Number(body['gender'] + 1);
+      body['civilStatus'] = Number(body['civilStatus'] + 1);
       this.studentService.addStudent(body).subscribe({
         next:(res:any) => {
-          this.toastr.error('student created','success');
+          this.createAddress(res.Result.id)
         },
         complete:() => {
           this.loadingIndicator = false;
           this.isSubmitted = false;
-          var modalElement: HTMLElement = document.getElementById('close-student')as HTMLElement;
-          if(modalElement !== null){
-            modalElement.click();
-          }
+
         },
         error:(error:any) => {
           this.loadingIndicator = false;
@@ -106,10 +108,11 @@ export class StudentListComponent implements OnInit {
     this.studentService.getAllBatches().subscribe({
       next:(res:any) => {
         this.batches = res.data;
+        this.selectedBatchId = this.batches[0].id;
+        this.params.batchId = this.selectedBatchId;
       },
       complete:() => {
         this.loadingIndicator = false;
-
       },
       error:(error:any) => {
         this.loadingIndicator = false;
@@ -121,7 +124,7 @@ export class StudentListComponent implements OnInit {
 
   public _getAllStudent(){
     this.loadingIndicator = true;
-    this.studentService.getAllStudent().subscribe({
+    this.studentService.getAllStudent(this.params).subscribe({
       next:(res:any) => {
         this.students = res.data;
         this.totalCount = res.totalCount;
@@ -136,6 +139,64 @@ export class StudentListComponent implements OnInit {
         this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
       }
     })
+  }
+
+  public createAddress(stud:string){
+    const formsValue = this.studentForm.value;
+   console.log(formsValue)
+    let body = {
+      line1: formsValue.line1,
+      line2: formsValue.line2,
+      city: formsValue.city,
+      province: formsValue.province,
+      country: formsValue.country
+    }
+
+    this.studentService.createAddress(body,stud).subscribe({
+      next:(res:any) => {
+        this.toastr.success('student created','success');
+      },
+      complete:() => {
+        this.loadingIndicator = false;
+        var modalElement: HTMLElement = document.getElementById('close-student')as HTMLElement;
+          if(modalElement !== null){
+            modalElement.click();
+          }
+          this._getAllStudent();
+
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.isSubmitted = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+    })
+  }
+
+  public setEditStudentData(){
+
+  }
+
+
+  public filterQuestion(){
+    this.params.batchId = this.selectedBatId;
+    this._getAllStudent();
+  }
+
+  //PAGINATION
+  public changePerPageValue(){
+    this.currentPage = 1;
+    this.params.itemsPerPage = this.itemsPerPage;
+    this.params.pageNumber = 1;
+    if(this.itemsPerPage > 0 ){
+      this._getAllStudent();
+    }
+  }
+
+  public onPageChange(event:any){
+    this.currentPage = event;
+    this.params.pageNumber = this.currentPage;
+    this._getAllStudent();
   }
 
 }

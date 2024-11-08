@@ -11,7 +11,7 @@ import { AppLoadingComponent } from "../../../Common/under-constraction/app-load
 @Component({
   selector: 'app-add-exam',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, JsonPipe, AppLoadingComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AppLoadingComponent],
   templateUrl: './add-exam.component.html',
   styleUrl: './add-exam.component.scss'
 })
@@ -251,7 +251,6 @@ export class AddExamComponent implements OnInit {
   private _getAssignCategory(){
     this.examService.getAssignCategory(this.examId).subscribe({
       next:(res:any) =>{
-        console.log(res);
         this.selectedCategory = res;
         this.selectedCategory.forEach(sc => {
           const category = this.categories.find(cat => cat.id === sc.id);
