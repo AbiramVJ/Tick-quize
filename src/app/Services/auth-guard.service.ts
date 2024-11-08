@@ -25,6 +25,7 @@ export class AuthGuardService {
     } else {
       this.router.navigateByUrl('not-found');
       return false;
+
     }
   }
 }
