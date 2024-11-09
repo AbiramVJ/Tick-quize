@@ -40,7 +40,8 @@ export class AddExamComponent implements OnInit {
   public categoryWithQuestions:any [] = [];
   public assignQuestionsIds:any[] = [];
 
-  constructor(private examService:ExamService,
+  constructor(
+    private examService:ExamService,
     private toastr: ToastrService,
     private categoryService:CategoryService,
     private fb:FormBuilder,

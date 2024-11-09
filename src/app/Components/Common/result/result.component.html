@@ -1,0 +1,42 @@
+<div class="row mt-3">
+  <div class="col-11 mx-auto p-0">
+    <div class="p-0 d-flex justify-content-between">
+      <div class="fs-4 fw-bold p-0">
+        Result
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-11 mx-auto">
+    <div class="row mt-3">
+      <div class="col-4 p-0">
+        <div class="">Category</div>
+        <ng-select [items]="exam" bindLabel="name" bindValue="id" [(ngModel)]="selectedExamId" [clearable]="false" (ngModelChange)="filterExam()"> </ng-select>
+      </div>
+      <!-- <div class="col-4">
+        <div>Search</div>
+        <input type="text" class="form-control" placeholder="Search"  [(ngModel)]="searchText" (keyup)="searchQuestions(searchText)">
+      </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-11 mx-auto body-card">
+    <div class="row tick-shadow p-4 rounded mt-3 bg-dark border text-white">
+      <div class="col-3 fw-bold">Exam</div>
+      <div class="col-3 fw-bold">Student</div>
+      <div class="col-3 fw-bold">Correct answer</div>
+      <div class="col-3 fw-bold">Total Question</div>
+    </div>
+    <div class="row tick-shadow p-4 rounded mt-3 bg-white" *ngFor="let r of result | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
+      <div class="col-3">{{r.examName}}</div>
+      <div class="col-3">{{r.firstName + r.lastName}}</div>
+      <div class="col-3">{{r.correctAnswers}}</div>
+      <div class="col-3">{{r.totalQuestions}}</div>
+
+      </div>
+    </div>
+  </div>

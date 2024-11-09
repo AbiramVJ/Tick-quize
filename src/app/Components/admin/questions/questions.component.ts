@@ -14,7 +14,7 @@ import { AppLoadingComponent } from "../../Common/under-constraction/app-loading
 @Component({
   selector: 'app-questions',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, FormsModule, NgSelectComponent, NgLabelTemplateDirective, NgxPaginationModule, AppLoadingComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, FormsModule, NgSelectComponent, NgxPaginationModule, AppLoadingComponent],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
 })

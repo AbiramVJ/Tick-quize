@@ -47,7 +47,6 @@ export class Questions {
   isAlreadyAdded:boolean;
 
   constructor(obj:any){
-    console.log(obj);
     this.id = obj.id ?? '';
     this.name = obj.name ?? '';
     this.isAlreadyAdded = obj.isAlreadyAdded ?? false;

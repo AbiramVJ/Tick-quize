@@ -39,7 +39,13 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren:()=> import('./Components/admin/business.routing.module').then(m => m.BusinessRoutingModule),
     canActivate: [CanActiveService],
+  },
+  {
+    path: 'common',
+    loadChildren:()=> import('./Components/Common/common.routing.module').then(m => m.BusinessRoutingModule),
+    canActivate: [CanActiveService],
   }
+
 
 
 ];

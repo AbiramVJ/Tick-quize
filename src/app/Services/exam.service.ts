@@ -4,6 +4,7 @@ import { map } from 'rxjs';
 import { Question } from '../Models/examQuestions';
 import { AssignCategory, Exam } from '../Models/exam';
 import { environment } from '../environments/environment';
+import { ExamResultsResponseModel } from '../Models/result';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,20 @@ export class ExamService {
     );
   }
 
+  public getAllExamWithoutPagination(){
+    return this.http.get<any>(`${this.baseUrl}Exam/getall`).pipe(
+      map((res: any) => {
+
+      //  console.log(res);
+        if (res) {
+          return res.Result.data.map((e:any) => new Exam(e));
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
   public addExam(body:any){
     return this.http.post<any>(`${this.baseUrl}Exam`, body);
   }
@@ -127,4 +142,18 @@ export class ExamService {
       })
     );
   }
+
+  public getAllResultByExamId(id:string){
+    console.log(id);
+    return this.http.get<any>(`${this.baseUrl}Students/get-exam-results/${id}`).pipe(
+      map((res: any) => {
+        if (res) {
+          return res.Result.map((result:any) => new ExamResultsResponseModel(result));
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
 }
