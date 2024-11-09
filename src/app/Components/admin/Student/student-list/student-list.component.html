@@ -1,7 +1,7 @@
 
 
 <div class="row mt-3">
-  <div class="col-10 mx-auto">
+  <div class="col-11 mx-auto">
     <div class="p-0 d-flex justify-content-between">
       <div class="fs-4 fw-bold p-0">
         Students
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="row mt-3">
-      <div class="col-4">
+      <div class="col-4 p-0">
         <div class="">Batch</div>
         <ng-select [items]="batches" bindLabel="name" bindValue="id" [(ngModel)]="selectedBatchId" (ngModelChange)="filterQuestion()"[clearable]="false"> </ng-select>
       </div>
@@ -20,9 +20,33 @@
         <input type="text" class="form-control" placeholder="Search"  [(ngModel)]="searchText" (keyup)="searchQuestions(searchText)">
       </div>
     </div>
-    <div class="row mt-3">
 
-      <div class="col-4 mt-3" *ngFor="let student of students | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
+      <div class="row tick-shadow p-4 rounded mt-3 bg-dark border text-white">
+        <div class="col-2 fw-bold">Profile</div>
+        <div class="col-2 fw-bold">Name</div>
+        <div class="col-2 fw-bold">Gender</div>
+        <div class="col-1 fw-bold">Batch</div>
+        <div class="col-3 fw-bold">Address</div>
+        <div class="col-1 fw-bold">Join date</div>
+        <div class="col-1 fw-bold">Actions</div>
+      </div>
+      <div class="row tick-shadow p-2 rounded mt-3 bg-white" *ngFor="let student of students | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
+         <div class="col-2"> <img src="https://st2.depositphotos.com/3369547/11114/v/450/depositphotos_111147738-stock-illustration-e-learning-design-education-icon.jpg" class="image" alt="" height="100px"></div>
+       <div class="col-2 d-flex align-items-center">{{student.firstName + ' ' + student.lastName}}</div>
+        <div class="col-2 d-flex align-items-center">{{student.admissionNo}}</div>
+        <div class="col-1 d-flex align-items-center">{{student.gender === 1 ? 'Male' : student.gender === 2 ? 'Female' : 'other' }}</div>
+        <div class="col-3 d-flex align-items-center text-truncate">{{student.fullAddress}}</div>
+        <div class="col-1 d-flex align-items-center"> {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
+
+        <div class="col-1 d-flex align-items-center fw-bold"> <div class="d-flex justify-content-end">
+          <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color"  data-bs-toggle="modal" data-bs-target="#add-student" (click)="setEditStudentData(student)" ></i></div>
+          <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-student" (click)="editStuId = student.id"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
+        </div></div>
+
+        <!-- </div> -->
+      </div>
+
+      <!-- <div class="col-4 mt-3" *ngFor="let student of students | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
         <div class="tick-shadow rounded p-2" >
           <div class="text-center border">
             <img src="https://st2.depositphotos.com/3369547/11114/v/450/depositphotos_111147738-stock-illustration-e-learning-design-education-icon.jpg" class="image" alt="" width="300px" height="200px">
@@ -41,9 +65,9 @@
             <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-student" (click)="editStuId = student.id"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-    </div>
+
 
 <div class="row mt-5">
   <div class="col-11 mx-auto">
