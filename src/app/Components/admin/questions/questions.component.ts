@@ -26,7 +26,7 @@ export class QuestionsComponent implements OnInit {
   public loadingIndicator:boolean = false;
 
   public searchText:string = '';
-
+  public examId:string = '';
   public selectedCatId:any;
   public cAnswer:number = 0;
 
@@ -74,7 +74,30 @@ export class QuestionsComponent implements OnInit {
     })
   }
 
-  public _updateQuestions(){
+  public _updateQuestion(){
+    this.isSubmitted = true;
+    let body = this.prepareBody();
+    if(this.questionForms.valid){
+      this.examService.updateQuestion(body,this.examId).subscribe({
+        next:(res) => {
+          this.isSubmitted = false;
+          this.toastr.success('success', 'question update scussfully');
+        },
+        complete:() => {
+          this.loadingIndicator = false;
+          var modalElement: HTMLElement = document.getElementById('close-ques')as HTMLElement;
+          if(modalElement !== null){
+            modalElement.click();
+          }
+          this._getAllQuestions();
+        },
+        error:(error:any) => {
+          this.loadingIndicator = false;
+          this.isSubmitted = false;
+          this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+        }
+      })
+    }
 
   }
 
@@ -94,6 +117,8 @@ export class QuestionsComponent implements OnInit {
             modalElement.click();
           }
           this._getAllQuestions();
+          this.examId = '';
+          this.isUpdate = false;
         },
         error:(error:any) => {
           this.loadingIndicator = false;
@@ -199,6 +224,25 @@ export class QuestionsComponent implements OnInit {
     this.currentPage = 1;
     this.params.searchText = searchText;
     this._getAllQuestions();
+
+  }
+
+  public editQuestion(question:any){
+   this.isUpdate = true
+   this.examId = question.id;
+    let setQusValue = {
+      name:question.name,
+      type:question.type,
+      option1:question.answerOptions[0].answer,
+      option2:question.answerOptions[1].answer,
+      option3:question.answerOptions[2].answer,
+      option4:question.answerOptions[3].answer
+    }
+
+    console.log(setQusValue);
+
+
+    this.questionForms.setValue(setQusValue);
 
   }
 

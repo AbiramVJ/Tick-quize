@@ -10,6 +10,7 @@ import { ExamResultsResponseModel } from '../Models/result';
   providedIn: 'root'
 })
 export class ExamService {
+
   private baseUrl = (environment as any).baseUrl;
 
 
@@ -64,6 +65,10 @@ export class ExamService {
 
   public addQuestion(body:any){
     return this.http.post<any>(`${this.baseUrl}Question`, body);
+  }
+
+  public updateQuestion(body:any,examId:any){
+    return this.http.put<any>(`${this.baseUrl}Question/Z${examId}`, body);
   }
 
   public getAllExam(pageSize:number,pageNumber:number){

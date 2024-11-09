@@ -35,7 +35,7 @@
         <div class="d-flex justify-content-end">
           <div class="d-flex">
             <div class="d-flex">
-              <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color" ></i></div>
+              <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color" data-bs-toggle="modal" data-bs-target="#add-questions" (click)="editQuestion(q)" ></i></div>
               <div class="pointer"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
             </div>
           </div>
@@ -71,7 +71,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{isUpdate ? 'Edit' : 'Add'}} Question</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-ques" (click)="questionForms.reset();isSubmitted = false"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-ques" (click)="questionForms.reset();isSubmitted = false; isUpdate = false; examId = ''"></button>
       </div>
       <div class="modal-body">
         <form [formGroup]="questionForms">
@@ -147,8 +147,8 @@
           </div>
         </form>
         <div class="d-flex text-center mt-3">
-          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="questionForms.reset(); isSubmitted = false">Cancel</button>
-          <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateQuestions() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
+          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="questionForms.reset(); isSubmitted = false; isUpdate = false; examId = ''">Cancel</button>
+          <button type="button" class="btn tick-button w-50" (click)="isUpdate ? _updateQuestion() : submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
         </div>
         <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
 

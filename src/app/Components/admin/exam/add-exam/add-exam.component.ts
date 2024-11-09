@@ -170,6 +170,7 @@ export class AddExamComponent implements OnInit {
             this.isSubmitted = false;
             this.step = 2;
             this.completePercentage = 60;
+            this._getAllExam();
           },
           error:(error:any) => {
             this.loadingIndicator = false;
