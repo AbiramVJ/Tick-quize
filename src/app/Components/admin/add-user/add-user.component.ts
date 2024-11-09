@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddUserComponent implements OnInit {
 
-  public users:{email:string, password:string}[] = [{email:'abiram586@gmail.com', password:"123456"}];
+  public users:{email:string}[] = [];
 
   public userForm!:FormGroup;
 
@@ -26,6 +26,7 @@ export class AddUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userFormInit();
+    this._getAllUsers();
   }
 
   private userFormInit(){
@@ -68,6 +69,13 @@ export class AddUserComponent implements OnInit {
 
   }
 
+  public _getAllUsers(){
+    this.userService.getAllAdminUsers().subscribe({
+      next:(res:any)=>{
+        this.users = res.data;
+      },
+    })
+  }
 
 
 }

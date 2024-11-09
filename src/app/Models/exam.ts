@@ -9,7 +9,7 @@ export class Exam {
 
 
   constructor(obj:any){
-   // console.log(obj);
+    console.log(obj);
     this.id = obj.id ?? null;
     this.name = obj.name ?? '';
     this.isActive = obj.isActive ?? '';
@@ -53,6 +53,9 @@ export class Questions {
     this.isAlreadyAdded = obj.isAlreadyAdded ?? false;
   }
 }
+
+
+
 
 
 export function formatDate(dateString: string): string {

@@ -114,4 +114,17 @@ export class ExamService {
   public completeExamCreation(body:any, examId:string){
     return this.http.post<any>(`${this.baseUrl}Exam/${examId}/add-questions`, body);
   }
+
+  public getExamById(id:string){
+    return this.http.get<any>(`${this.baseUrl}Exam/${id}`).pipe(
+      map((res: any) => {
+        console.log(res);
+        if (res) {
+          return new Exam(res.Result);
+        } else {
+          return [];
+        }
+      })
+    );
+  }
 }

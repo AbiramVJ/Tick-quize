@@ -18,7 +18,7 @@ export class ExamsComponent {
   public examQuestions:Question[] = [];
   public timerInterval: any;
  // selectedAnswers: { [questionId: number]: number } = {};
-  public minutes: number = 60;
+  public minutes: number = 0;
   public seconds: number = 0;
   public currentPage:number = 1;
   public isLastPage:boolean = false;
@@ -40,6 +40,7 @@ export class ExamsComponent {
     this.examId = this.activeRoute.snapshot.paramMap.get('id');
     this._startExam();
     this.preventBackButton();
+
   }
 
   public _startExam(){
@@ -64,10 +65,10 @@ export class ExamsComponent {
     this.examService.getQuestionsDetails(id).subscribe({
       next:(res:any)=>{
         this.examQuestions = res;
-        this.loadingIndicator = false;
+
       },
       complete:()=>{
-        this.startTimer();
+        this._getSingleExam(id);
       },
       error:(error:any)=>{
         this.loadingIndicator = false;
@@ -75,6 +76,25 @@ export class ExamsComponent {
 
       }
     })
+  }
+
+  public _getSingleExam(id:string){
+    this.examService.getExamById(id).subscribe({
+      next:(res:any)=>{
+        this.loadingIndicator = false;
+        this.minutes = res.duration;
+      },
+      complete:()=>{
+        this.startTimer();
+      },
+      error:(error:any)=>{
+        console.log(error);
+        this.loadingIndicator = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+
+      }
+    })
+
   }
 
   startTimer() {

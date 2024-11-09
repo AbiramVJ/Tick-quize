@@ -11,16 +11,17 @@
     <div class="ms-2 mt-2">
       <div class="form-check" *ngFor="let answer of question.answerOptions; let i = index">
         <input class="form-check-input"
-          type="radio"
-          name="flexRadioDefault{{question.id}}"
-          id=answer{{i}}
-          (click)="answer.isChecked = true"
-          (change)="updatedAnswer(question.id, answer.id)"
-          [checked]="answer.isChecked"
-           >
-        <label class="form-check-label" for=answer{{i}}>
-         {{answer.answer}}
-        </label>
+       type="radio"
+       [name]="'flexRadioDefault' + question.id"
+       [id]="'answer' + answer.id"
+       (click)="answer.isChecked = true"
+       (change)="updatedAnswer(question.id, answer.id)"
+       [checked]="answer.isChecked"
+      >
+      <label class="form-check-label ms-2 pointer" for="{{'answer' + answer.id}}">
+          {{answer.answer}}
+      </label>
+
       </div>
     </div>
   </div>

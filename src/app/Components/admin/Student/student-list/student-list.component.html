@@ -1,3 +1,5 @@
+
+
 <div class="row mt-3">
   <div class="col-10 mx-auto">
     <div class="p-0 d-flex justify-content-between">
@@ -28,15 +30,15 @@
           <div class="d-flex justify-content-between">
             <div class="fw-bold fs-5 mt-3 ps-1">{{student.firstName + ' ' + student.lastName}}</div>
 
-            <div class="fw-bold mt-3 fs-5 ps-1 text-danger">{{student.admissionNo}}</div>
+            <div class="fw-bold mt-3 fs-5 ps-1 text-danger"><b>A-NO: </b> {{student.admissionNo}}</div>
           </div>
-          <div class="mt-3">{{student.gender === 1 ? 'Male' : student.gender === 2 ? 'Female' : 'other' }}</div>
-          <div class="mt-1">{{student.fullAddress}}</div>
-          <div>Join Date: {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
-          <div>Batch: {{'2024'}}</div>
+          <div class="mt-3"><b>Gender: </b>{{student.gender === 1 ? 'Male' : student.gender === 2 ? 'Female' : 'other' }}</div>
+          <div class="mt-1 text-truncate"><b>Address: </b>{{student.fullAddress}}</div>
+          <div><b>oin Date: </b>J {{student.joinedDate | date:'dd-MM-yyyy'}}</div>
+          <div><b>Batch: </b> Batch: {{'2024'}}</div>
           <div class="d-flex justify-content-end">
             <div class="me-3 pointer"><i class="fas fa-pencil-alt tick-color"  data-bs-toggle="modal" data-bs-target="#add-student" (click)="setEditStudentData(student)" ></i></div>
-            <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-user"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
+            <div class="pointer" data-bs-toggle="modal" data-bs-target="#delete-student" (click)="editStuId = student.id"><i class="far fa-trash-alt text-danger" aria-hidden="true"></i></div>
           </div>
         </div>
       </div>
@@ -175,6 +177,29 @@
           <button type="button" class="btn tick-button w-50" (click)="submit()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Submit</button>
         </div>
         <app-app-loading *ngIf="loadingIndicator"></app-app-loading>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete-student" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-delete" (click)="editStuId = ''"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img src="https://freesvgillustration.com/wp-content/uploads/2022/03/Delete-Confirmation-1.png" alt="" width="350px">
+          <div class="fs-4">
+            Are you sure want to delete this Student ?
+          </div>
+        </div>
+        <div class="d-flex text-center mt-3">
+          <button type="button" class="btn tick-button me-3 w-50" data-bs-dismiss="modal" data-bs-dismiss="modal" (click)="editStuId = ''">No</button>
+          <button type="button" class="btn tick-button w-50" (click)="_deleteStudent()" [disabled]="loadingIndicator"><span class="spinner-border spinner-border-sm" *ngIf="loadingIndicator"></span> Yes</button>
+        </div>
       </div>
     </div>
   </div>

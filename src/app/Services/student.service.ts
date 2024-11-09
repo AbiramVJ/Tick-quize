@@ -55,6 +55,10 @@ export class StudentService {
 
   }
 
+  public deleteStudent(id:string){
+    return this.http.delete<any>(`${this.baseUrl}Students/${id}`);
+  }
+
   public getStudentAddress(stuId:string){
     return this.http.get<any>(`${this.baseUrl}Batch/getall`).pipe(
       map((res: any) => {

@@ -16,5 +16,21 @@ export class UserService {
     return this.http.post<any>(this.baseUrl + 'Auth/qw/admin',body);
   }
 
+  public getAllAdminUsers(){
+    return this.http.get<any>(`${this.baseUrl}Admin/getall`).pipe(
+      map((res: any) => {
+        if (res) {
+          return {
+            data: res.Result.data,
+            totalCount: res.Result.totalCount
+          };
+
+        } else {
+          return [];
+        }
+      })
+    );
+  }
+
 
 }

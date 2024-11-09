@@ -229,6 +229,27 @@ export class StudentListComponent implements OnInit {
     this.studentForm.setValue(setBody);
   }
 
+  public _deleteStudent(){
+    this.loadingIndicator = true;
+    this.studentService.deleteStudent(this.editStuId).subscribe({
+      next:(res:any) => {
+        this._getAllStudent();
+      },
+      complete:() => {
+        this.loadingIndicator = false;
+        this.toastr.success('success', 'student deleted successfully');
+        var modalElement: HTMLElement = document.getElementById('close-delete')as HTMLElement;
+        if(modalElement !== null){
+          modalElement.click();
+        }
+        this.editStuId = '';
+      },
+      error:(error:any) => {
+        this.loadingIndicator = false;
+        this.toastr.error(error.error.Error.Title, error.error.Error.Detail);
+      }
+    })
+  }
 
   public filterQuestion(){
     this.params.batchId = this.selectedBatchId;
