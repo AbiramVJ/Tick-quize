@@ -124,11 +124,11 @@ export class QuestionsComponent implements OnInit {
           isCorrect:  this.cAnswer === 2 ? true : false,
         },
         {
-          name: formsValue.option2,
+          name: formsValue.option3,
           isCorrect:  this.cAnswer === 3 ? true : false,
         },
         {
-          name: formsValue.option2,
+          name: formsValue.option4,
           isCorrect:  this.cAnswer === 4 ? true : false,
         }
       ]

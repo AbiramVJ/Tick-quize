@@ -75,7 +75,7 @@ export class ResultComponent implements OnInit {
   }
 
   public filterExam(){
-
+    this._getAllResultByExamId();
   }
 
 
