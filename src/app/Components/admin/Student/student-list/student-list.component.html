@@ -45,7 +45,11 @@
 
         <!-- </div> -->
       </div>
-
+      <div class="text-center d-flex align-items-center justify-content-center mt-5">
+        <div>
+        <app-app-loading *ngIf="!loadingIndicator"></app-app-loading>
+        </div>
+      </div>
       <!-- <div class="col-4 mt-3" *ngFor="let student of students | paginate: { itemsPerPage:itemsPerPage , currentPage: currentPage,totalItems: totalCount }; let i = index">
         <div class="tick-shadow rounded p-2" >
           <div class="text-center border">
@@ -83,11 +87,10 @@
       </div>
     </div>
   </div>
-
 </div>
   </div>
 </div>
-<app-app-loading *ngIf="loadingIndicator"></app-app-loading>
+
 
 
 <!-- Modal -->
